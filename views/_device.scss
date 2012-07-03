@@ -1,0 +1,11 @@
+@media only screen and (device-width: 768px) {
+  /* iPad screen size rules */
+}
+@media only screen and (min-device-width: 481px) and
+(max-device-width: 1024px) and (orientation:portrait) {
+  /* Portrait iPad display */
+}
+@media only screen and (min-device-width: 481px) and
+(max-device-width: 1024px) and (orientation:landscape) {
+  /* Landscape iPad display */
+}

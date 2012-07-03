@@ -1,0 +1,5 @@
+#wrap
+  #container
+    %form{:action=>"/entry/new", :method=>"post"}
+      =generate_form("entry", nil)
+      %input{:type => 'submit', :value => 'save', :class => 'button'}

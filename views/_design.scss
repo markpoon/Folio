@@ -1,0 +1,141 @@
+$textcolor: #555;
+$linkcolor: #a0a0a0;
+
+@mixin shadow($colour: rgba(0, 0, 0, 0.8), $weight: 6px, $blur: 14px){
+  -webkit-box-shadow: $weight $weight $blur $colour;
+  -moz-box-shadow: $weight $weight $blur $colour;
+  box-shadow: $weight $weight $blur $colour;
+}
+
+@mixin rounded($topleft: 12px, $bottomleft:$topleft, $bottomright:$bottomleft, $topright:$topleft){
+  -moz-border-radius: $topleft $topright $bottomright $bottomleft;
+  -webkit-border-radius: $topleft $topright $bottomright $bottomleft;
+  border-radius: $topleft $topright $bottomright $bottomleft;
+  -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
+}
+
+@mixin columns($gap:0){
+  -moz-column-gap: $gap;
+  -webkit-column-gap: $gap;
+  column-gap: $gap;
+  
+  @media screen and (max-width: 1600px) {
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+    column-count: 3;
+  }
+  @media screen and (max-width: 960px) {
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    column-count: 2;
+  }
+  @media screen and (max-width: 640px) {
+    -moz-column-count: 1;
+    -webkit-column-count: 1;
+    column-count: 1;
+  }
+  @media screen and (max-width: 480px) {
+    -moz-column-count: 1;
+    -webkit-column-count: 1;
+    column-count: 1;
+  }
+}
+
+
+
+/*
+
+@mixin textcolor($args: auto){
+  color: $textcolor;
+}
+@mixin textshadow($args: auto){
+  text-shadow: $arg;
+}
+@mixin textlink($args: auto){
+  & a { display: block; text-decoration: none; color: $linkcolor; @import text-shadow(0px 3px 8px #2a2a2a); }
+   & a:hover { color: #a0a0a0; @import textshadow(0px 3px 8px #2a2a2a); }
+}
+
+// DIV
+@mixin insetdiv{
+  // Make Div Background dark and give it an inset feeling with a highlight line underneath
+  padding: 20px;
+  margin: 10px 0px 10px 0px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  @include boxshadow( inset 0, 2px, 3px, rgba(0, 0, 0, 0.1));
+  @include rounded(none, 0px 10px);
+}
+
+@mixin fullwidthembossbox{
+  opacity: 0;
+   -webkit-transition: opacity .33s;
+   -moz-transition: opacity .33s;
+   position: absolute;
+   bottom: 0;
+   background: rgba(0,0,0,.65);
+   width: 100%;
+   padding: 0px 10px;
+   margin: 0px;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+}
+
+@mixin lightbox{
+  padding: 20px;  
+  margin: 20px 0px 20px 0px;
+  @include boxshadow(0, 2px, 3px, #555);
+  background: #222; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  -moz-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.1);
+  @include rounded();
+  
+}
+
+@mixin boxshadow($a: 0, $x: 0px, $y: 4px, $z: -8px, $c: rgba(0,0,0,0.7)){
+  -webkit-box-shadow: $a $x $y $z $c;
+  -moz-box-shadow: $a $x $y $z $c;
+  box-shadow: $a $x $y $z $c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+
+@mixin opacity($transparency: 0.85){
+opacity: $transparency;
+filter: alpha(opacity= $transparency);
+}
+
+@mixin fade($start: .80, $end: 1, $ease: .25s){
+  opacity: $start;
+  transition: opacity $ease ease-in-out;
+  -moz-transition: opacity $ease ease-in-out;
+  -webkit-transition: opacity $ease ease-in-out;
+  &:hover {opacity: 1;}
+}
+
+@mixin gradient($start: #CCCCCC,$finish: darken($start,25%),$stop: 1){
+  -webkit-background-clip: padding-box;
+  background: $start;
+  background-image: -moz-linear-gradient(top, $start 0%, $finish percentage($stop));
+  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, $start),color-stop($stop, $finish));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr=#{$start + 'FF'}, EndColorStr=#{$finish + 'FF'});
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr=#{$start + 'FF'}, EndColorStr=#{$finish + 'FF'})";
+  background-image: linear-gradient(top, $start 0%, $finish percentage($stop));
+}
+
+@mixin imagereplace($name,$width:auto,$height:auto,$ext: png,$units: px){
+  background: url(/images/ + $name + "." + $ext) transparent 0 0 no-repeat;
+  display: block;
+  padding: 0;
+  text-indent: -12345px;
+  max-width: 100%;
+  height: $height + $units;
+  width: $width + $units;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*/

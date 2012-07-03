@@ -1,0 +1,109 @@
+$golden: 1.618;
+$g0: 1rem;
+
+$gn1: $g0 / $golden;
+$gn2: $gn1 / $golden;
+$gn3: $gn2 / $golden;
+$gn4: $gn3 / $golden;
+$gn5: $gn4 / $golden;
+
+$g1: $g0 * $golden;
+$g2: $g1 * $golden;
+$g3: $g2 * $golden;
+$g4: $g3 * $golden;
+$g5: $g4 * $golden;
+$g6: $g5 * $golden;
+$g7: $g6 * $golden;
+$g8: $g7 * $golden;
+$g9: $g8 * $golden;
+$g10: $g9 * $golden;
+
+@import "normalize";
+@import "flex";
+@import "design";
+
+$linkcolor: #e1decf;
+$backgrey: #53595d;
+$hilite: #ffff47;
+
+html {
+	font: lighter "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
+	line-height: $g1;
+}
+
+body {
+  a {
+     &:hover { color: $hilite;}
+     &:active {color: $hilite;}
+     color: $linkcolor;
+     text-decoration: none;
+  }
+}
+
+.imagetile{
+  @include columns;
+}
+
+.nav{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  height: 40px;
+  line-height: 40px;
+  width: 100%;
+  height: 50px;
+  display: table-cell;
+  text-align: left;
+  background: #333;
+  @include shadow();
+  & a{
+    margin: 0px 12px 0px 12px;
+  }
+}
+
+.tag {
+  color: white;
+  text-shadow: #484848 1px 1px;
+  background-color: #4488aa;
+  @include rounded(6px);
+  padding: 2px 7px 2px 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display:inline-block;
+  &:hover {background-color: #8ebed4; text-decoration: underline;}
+}
+
+#search {
+  float: right;
+  position: relative;
+  padding-right: 15px;
+  text-align: center;
+  margin-top:4px;
+  display: inline;
+  & input[type="text"] {
+    background: url(search-white.png) no-repeat 10px 6px #444;
+    border: 0 none;
+    font: bold 12px Arial,Helvetica,Sans-serif;
+    color: #d7d7d7;
+    width: 150px;
+    top: 0px;
+    padding: 6px 15px 6px 35px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    -webkit-transition: all 0.7s ease 0s;
+    -moz-transition: all 0.7s ease 0s;
+    -o-transition: all 0.7s ease 0s;
+    transition: all 0.7s ease 0s;}
+    & input[type="text"]:focus{
+    background: url(search-dark.png) no-repeat 10px 6px #fcfcfc;
+    color: #6a6f75;
+    width: 200px;
+    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
+    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);}
+}

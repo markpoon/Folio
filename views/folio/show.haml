@@ -1,0 +1,20 @@
+.row
+  -binding.pry
+  %h1=@entry.title
+  =in_embed(:tag, @entry)
+  %br
+  %p=@entry.description
+  %br
+  -if @entry.images
+    =in_embed(:image, @entry)
+  -if @entry.attachments
+    =in_embed(:attachment, @entry)
+-if admin?
+  %br
+  %form{:action => "/entry/edit/#{@entry.id}", :method => "update"}
+    %input{:type => 'submit', :value => 'Update', :class => 'button'}
+  %form{:action => "/entry/delete/#{@entry.id}", :method => "post"}
+    %input{:name=> "_method", :value=>"delete", :type=>"hidden"}
+    %input{:type => 'submit', :value => 'Delete', :class => 'button'}
+  
+  
