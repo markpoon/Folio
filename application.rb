@@ -1,7 +1,6 @@
 # Requirements
 [ "sinatra", "haml", "sass", "redcarpet", "pry", "active_support", "mongoid" ].each { |gem| require gem}
 enable :inline_templates
-set :public_folder, 'public'
 Mongoid.load! "config/mongoid.yml"
 
 enable :sessions
@@ -50,6 +49,7 @@ class Folio
   validates_uniqueness_of :title
 end
 
+
 class Content
   include Mongoid::Document
   field :title, type: String
@@ -59,18 +59,20 @@ class Content
   validates_uniqueness_of :title
 end
 
+class Quote
+  include Mongoid::Document
+  field :quotation, type: String
+  field :author, type: String
+  validates_presence_of :quotation, :author
+  validates_uniqueness_of :quotation
+end
+
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
 
 helpers do
   # SESSIONS #  
-  def trim(data) ; proc = Proc.new { |k, v| v.delete_if(&proc) if v.kind_of?(Hash);  v.empty? }; data.delete_if(&proc); end
-  def authorized?
-    if session[:user]
-      return true 
-    else 
-      status 401 
-    end
-  end
+  def trim(data); proc = Proc.new { |k, v| v.delete_if(&proc) if v.kind_of?(Hash);  v.empty? }; data.delete_if(&proc); end
+  def authorized?; session[:user] ? (return true) : (status 403); end
   def authorize!; redirect '/login' unless authorized?; end  
   def logout!; session[:user] = false; end
   def generate_form(model, obj=nil)
@@ -92,16 +94,26 @@ helpers do
     end
     a
   end
-  
   def dynamicinput(title, db, v=nil)
      haml :_input, :locals => {:labelname => (title), :db => (db), :value => (v)}
   end
-  def tagarray(t)
-    t.strip.gsub(/(\^\s\*|\d)/, "").gsub(/\s+/, " ").split(", ")
+  def tagarray(t); t.strip.gsub(/(\^\s\*|\d)/, "").gsub(/\s+/, " ").split(", "); end
+  def search(pattern="")
+    Folio.in('tag' => pattern.strip.gsub(/(\^\s\*|\d)/, "").gsub(/\s+/, " ").split(", "))
   end
 end
 
+
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
+
+before do
+  if session[:user] then @user = session[:user] end
+end
+
+post '/search' do
+  @folio = search params[:search]
+  haml :'folioindex'
+end
 
 # SESSIONS #
 get '/login' do  
@@ -123,8 +135,7 @@ get '/logout' do
   redirect '/'
 end
 
-get '/register' do
-  
+get '/register' do 
 end
 
 post '/register' do
@@ -135,7 +146,6 @@ post '/register' do
   redirect "/"
 end
 
-
 get '/folio/' do
   folio = Folio.all
   if folio.nil? then
@@ -143,10 +153,9 @@ get '/folio/' do
   else
     status 200
     @folio = folio
-    haml :index
+    haml :folioindex
   end
 end
-
 
 # REST #
 
@@ -174,7 +183,7 @@ end
 
 get '/folio/:title' do
   folio = Folio.find_by(title: params[:title])
-  if folio nil? then
+  if folio.nil? then
     status 404
   else
     status 200
@@ -185,7 +194,7 @@ end
 
 get '/folio/edit/:title' do
   folio = Folio.find_by(title: params[:title])
-  if folio nil? then
+  if folio.nil? then
     status 404
   else
     status 200
@@ -210,9 +219,9 @@ put '/folio/:title' do
     status 404
   else
     folio = Folio.new( #~#~#~ add stuff here! remember the comma
-      title: data[:title].tr!(' ', '_'),
+      title: data[:title].downcase.gsub(/\s/, '_'),
       updated: Time.now,
-      tag: (tagarray data[:tag])   
+      tag: (tagarray data[:tag])
     ) 
     data[:content].length.each_with_index do |datacontent, i|
       folio[:content][i][:title] = datacontent[i][:title]
@@ -225,7 +234,7 @@ end
 delete '/folio/:title' do
   authorized?
   folio = Folio.find_by(title: params[:title])
-  if folio nil? then
+  if folio.nil? then
     status 404
   else
     note.destroy ? (status 200) : (status 500)
@@ -242,8 +251,17 @@ get "/style.css" do
 end
 
 get "/?" do
-  @folio = Folio.desc(:created)
-  haml :index
+ 
+  d = Quote.count-1
+  quote = Quote.desc[rand 0..d]
+  binding.pry
+  if quote.nil? then
+    status 404
+  else
+    status 200
+    @quote = quote
+    haml :index
+  end
 end
 
 __END__
@@ -252,41 +270,37 @@ __END__
 !!! 5
 %html
   %head
-    %title="Theta's Portfolio"
+    %title="Theta"
     %link{:href => "/style.css", :rel => "stylesheet"}
     %script{:src => "js/modernizr.js"}
   %body
     %header
       = haml :_nav
-      = haml :_search
-      
   %container
     = yield
   %footer
     = haml :_login
   %script{:src => "js/right.js"}
-  %script{:src => "js/formadder.js"}
 
 @@_nav
 .nav
   %a{href: '/'}> &thetasym; 
-  %a{href: '/note/'}> Note To Future Self 
   %a{href: '/folio/'}> Portfolio 
   %a{href: 'mailto:markpoon@me.com'}> Contact Me
+  = haml :_search
   
 @@_login
 - if @user
   %span
     %p
-      You are logged in as #{@user.name}
+      You are logged in as #{@user.email}
       %a{:href => '/logout'} Logout
 - else
   %form.login{:action => "/login", :method => "post"}
     %input#login{:name => "login", :placeholder => "Login", :type => "text"}/
     %input#password{:name => "password", :placeholder => "Password", :type => "password"}/
     %input#loginer{:name => "submit", :type => "submit", :value => "Login"}/
-  %a{:href => '/register'} Register
-  
+
 @@_register
 %form.register{:action => '/register', :method => 'post'}
   dynamicinput('email', 'email')
@@ -297,30 +311,58 @@ __END__
 #search
   %form{:action=>"/search", :method=>"post", :id=>"search"}
     %input{:type => "text", :name => "search", :class => "search", :placeholder => "Search Tags"}
+    %img{src: "./images/login.png", align: "right"}
 
 @@index
+.row
+  .twelvecol
+    %h1=@quote.quotation
+    %p{align: "right"}=@quote.author
+.row
+  .fourcol
+    = markdown File.read("./views/index/bio.md")
+  .fourcol
+    = markdown File.read("./views/index/purpose.md")
+  .fourcol.last
+    = markdown File.read("./views/index/tools.md")
+
+@@folioindex
 .imagetiles
-  - @folio.each do |folio|
-    %h1=folio[:title]
-    - folio.contents.each do |content|
-      = markdown content.block
-    .tags  
-    - folio.tag.each do |t|
-      .tag
-        %a{href: "/search/#{t}"}>=t
+  -@folio.each do |folio|
+    %figure
+      %a{href: "/folio/#{folio[:title]}"}>
+        %img{src: folio[:thumbnail]}
+      %figcaption
+        %table{align: "right"}
+          %tr
+            %td{width: "100%"}
+              %a{href: "/folio/#{folio[:title]}"}>
+                %h2=folio[:title].humanize.titlecase
+            - folio.tag.each do |t|      
+              %td
+                .tag
+                  %a{href: "/search/#{t}"}>=t
 
 @@show
-%p @folio[:title]
-- folio[:content].length.each_with_index do |content, i|
-  - markdown.render content[i][:block]
-- @folio[:tag].each do |t|
-  - tag t
+%br
+.row
+  %table
+    %tr
+      %td
+        %h2=@folio[:title].humanize.titlecase
+      - @folio.tag.each do |t|      
+        %td
+          .tag
+            %a{href: "/search/#{t}"}>=t
+.row
+  - @folio.contents.each do |content|
+    = markdown content.block
 =haml :_admincontrol
   
 @@newedit
 %form{:action=>"/folio/:title", :method=>"put"}
   %ul
-    = generate_form("folio", (@folio ? (@folio) : (nil)))
+    = generate_form("folio", @folio)
   %input{:type => 'submit', :value => 'save', :class => 'button'}
 
 @@_input
@@ -329,9 +371,11 @@ __END__
   %input{:name => db, :value => value}
    
 @@_admincontrol
--if authenticated?
-  %form{:action => "/folio/:title", :method => "update"}
-    %input{:type => 'submit', :value => 'Update', :class => 'button'}
-  %form{:action => "/folio/:title", :method => "post"}
-    %input{:name=> "_method", :value=>"delete", :type=>"hidden"}
-    %input{:type => 'submit', :value => 'Delete', :class => 'button'}
+.row
+  .twelvecol
+    -if authorized?
+      %form{:action => "/folio/edit/#{@folio.title}", :method => "update"}
+        %input{:type => 'submit', :value => 'Update', :class => 'button'}
+      %form{:action => "/folio/#{@folio.title}", :method => "post"}
+        %input{:name=> "_method", :value=>"delete", :type=>"hidden"}
+        %input{:type => 'submit', :value => 'Delete', :class => 'button'}

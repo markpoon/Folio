@@ -1,0 +1,6 @@
+###A Sense of Purpose
+I started out drawing pretty things on a computer. That became understanding how to be persuasive through design and a general exploration of computers. At school I started exploring different things, working with web design, 3d, audio/video and print in general and that became more physical in college, plastics, metals. I create things, but how and what was interchangable, there was not one I loved above all else.
+
+At the think tank I researched high technology, genetics, nanotech, futurist subjects and applied it as a compass for designing products. This experience changed the way I saw the world, but the places I wanted to get to were far away, I spent about two years freelancing in web design and graphic design and another making/directed the general graphics and user interface at a software company. focusing on doing things.
+
+I spent a year in Europe learning the breath of subjects related to the global space industry, commercialization of the ISS, remote sensing for illegal fishing on the high seas. I lived on Base at NASA in Mountainview and made a bid for an SBIR to create a modular experimentation platform with three friends at the university.

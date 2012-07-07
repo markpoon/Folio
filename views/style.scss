@@ -22,88 +22,160 @@ $g10: $g9 * $golden;
 @import "flex";
 @import "design";
 
-$linkcolor: #e1decf;
-$backgrey: #53595d;
-$hilite: #ffff47;
+$textcolor: #5f6267;
+$linkcolor: #3d6cb6;
+$hilite: #5f8cd3;
+
+$backgrey: #ededed;
 
 html {
-	font: lighter "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
-	line-height: $g1;
+  line-height: $g1;
+  background-color: $backgrey;
+  font-weight: lighter;
+  font-family: "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
+  color: textcolor;
 }
 
 body {
-  a {
-     &:hover { color: $hilite;}
-     &:active {color: $hilite;}
-     color: $linkcolor;
-     text-decoration: none;
+  padding-top: 40px;
+}
+input[type="text"], input[type="password"] {
+  background: #fff;
+  border: 0 none;
+  width:100px;
+  top: 0px;
+  margin-top: 3px;
+  padding: 8px 15px 4px 15px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+  -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+  &:focus{
+    outline: none;
   }
+}
+
+a {
+   &:hover { color: $hilite; text-decoration: underline;}
+   &:active { color: $hilite;}
+   color: $linkcolor;
+   text-decoration: none;
+}
+
+header{
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  line-height: 35px;
+  width: 100%;
+  height: 40px;
+  display: inline;
+  text-align: left;
+  overflow: hidden;
+  @include background();
+  @include shadow();
+  z-index: 1;
+  & a{
+    margin: 0 0 0 15px;
+  }
+}
+
+footer {
+  position: fixed;
+  bottom: 0px;
+  height: 35px;
+  line-height: 17px;
+  width: 100%;
+  text-align: center;
+  display: inline-table;
+  visibility: hidden;
+  @include background();
+  @include shadow();
+}
+
+figure{
+  margin: 0;
+  position: relative;
+  display: block;
+
+}
+
+figcaption {
+  position: absolute;
+  bottom: 0;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  webkit-box-sizing: border-box;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  width: 100%
+}
+
+td {
+  padding: 0 3px 0 3px;
 }
 
 .imagetile{
   @include columns;
 }
 
-.nav{
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  height: 40px;
-  line-height: 40px;
-  width: 100%;
-  height: 50px;
-  display: table-cell;
-  text-align: left;
-  background: #333;
-  @include shadow();
-  & a{
-    margin: 0px 12px 0px 12px;
-  }
+.nav {
+  margin-top: 3px;
 }
 
 .tag {
-  color: white;
+  font-size: 10pt;
+  font-weight: bold;
   text-shadow: #484848 1px 1px;
   background-color: #4488aa;
   @include rounded(6px);
-  padding: 2px 7px 2px 7px;
+  padding: 0 5px 0 5px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display:inline-block;
-  &:hover {background-color: #8ebed4; text-decoration: underline;}
+  &:hover {background-color: #8ebed4; text-decoration: underline;
+  }
+  & a{
+    color: #fff;
+    &:hover { color: #fff;}
+    &:active { color: #fff;}
+  }
 }
 
 #search {
   float: right;
   position: relative;
-  padding-right: 15px;
+  padding-right: 10px;
+  margin-top: -1px;
   text-align: center;
-  margin-top:4px;
-  display: inline;
+  display: inline-table;
   & input[type="text"] {
-    background: url(search-white.png) no-repeat 10px 6px #444;
+    background: url("./images/search-dark.png") no-repeat 10px 6px #fcfcfc;
     border: 0 none;
-    font: bold 12px Arial,Helvetica,Sans-serif;
-    color: #d7d7d7;
-    width: 150px;
+    color: #8a8a8a;
+    width: 95px;
     top: 0px;
-    padding: 6px 15px 6px 35px;
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    text-shadow: 0 2px 2px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
-    -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 3px rgba(0, 0, 0, 0.2) inset;
+    margin-top: 5px;
+    padding: 8px 15px 4px 35px;
     -webkit-transition: all 0.7s ease 0s;
     -moz-transition: all 0.7s ease 0s;
     -o-transition: all 0.7s ease 0s;
     transition: all 0.7s ease 0s;}
-    & input[type="text"]:focus{
-    background: url(search-dark.png) no-repeat 10px 6px #fcfcfc;
-    color: #6a6f75;
-    width: 200px;
+  & input[type="text"]:focus{
+    background: url("./images/search-light.png") no-repeat 10px 6px #444;
+    outline: none;
+    color: #fff;
+    width: 120px;
     -webkit-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);}
 }
+
+//Type
+
+h1{padding: 10px 0 5px 0;}
+h3{}
+
