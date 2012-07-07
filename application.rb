@@ -1,5 +1,5 @@
 # Requirements
-[ "sinatra", "haml", "sass", "redcarpet", "pry", "active_support", "mongoid" ].each { |gem| require gem}
+[ "sinatra", "haml", "sass", "redcarpet", "pry", "active_support", "mongoid", "coffee-script" ].each { |gem| require gem}
 enable :inline_templates
 Mongoid.load! "config/mongoid.yml"
 
@@ -250,11 +250,15 @@ get "/style.css" do
   scss :style
 end
 
+get '/js/run.js' do
+  content_type "text/javascript", :charset => 'utf-8'
+  coffee :run
+end
+
 get "/?" do
  
   d = Quote.count-1
   quote = Quote.desc[rand 0..d]
-  binding.pry
   if quote.nil? then
     status 404
   else
@@ -272,21 +276,24 @@ __END__
   %head
     %title="Theta"
     %link{:href => "/style.css", :rel => "stylesheet"}
-    %script{:src => "js/modernizr.js"}
+    %script{:src => "/js/modernizr.js"}
   %body
     %header
       = haml :_nav
   %container
     = yield
   %footer
-    = haml :_login
-  %script{:src => "js/right.js"}
+    #footer= haml :_login
+  %script{:src => "/js/right.js"}
+  %script{:src => "/js/run.js"}
 
 @@_nav
 .nav
   %a{href: '/'}> &thetasym; 
   %a{href: '/folio/'}> Portfolio 
   %a{href: 'mailto:markpoon@me.com'}> Contact Me
+  #loginimage
+    %img{src: "/images/login.png"}
   = haml :_search
   
 @@_login
@@ -311,8 +318,6 @@ __END__
 #search
   %form{:action=>"/search", :method=>"post", :id=>"search"}
     %input{:type => "text", :name => "search", :class => "search", :placeholder => "Search Tags"}
-    %img{src: "./images/login.png", align: "right"}
-
 @@index
 .row
   .twelvecol
