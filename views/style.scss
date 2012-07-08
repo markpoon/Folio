@@ -57,6 +57,9 @@ input[type="text"], input[type="password"] {
     outline: none;
   }
 }
+input[type= "button"]{
+  margin-top: 3px;
+}
 
 a {
    &:hover { color: $hilite; text-decoration: underline;}
@@ -64,7 +67,10 @@ a {
    color: $linkcolor;
    text-decoration: none;
 }
-
+h1, h2, h3{padding-top: 15px; @include textshadow();}
+ul, p{padding-top: 15px;}
+img{align: middle;}
+ul{padding-left: 25px;}
 header{
   position: fixed;
   top: 0px;
@@ -75,7 +81,7 @@ header{
   display: inline;
   text-align: left;
   overflow: hidden;
-  @include background();
+  @include barbackground();
   @include shadow();
   z-index: 1;
   & a{
@@ -89,9 +95,9 @@ footer {
   height: 35px;
   line-height: 17px;
   width: 100%;
-  text-align: center;
+  text-align: right;
   display: inline-table;
-  @include background();
+  @include barbackground();
   @include shadow();
 }
 
@@ -179,6 +185,4 @@ td {
 
 //Type
 
-h1{padding: 10px 0 5px 0;}
-h3{}
 
