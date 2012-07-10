@@ -1,4 +1,4 @@
 $(document).onReady ->
-  "footer".hide "fade"
+  "footer".hide()
   "#loginimage".onClick ->
     "footer".toggle "fade"

@@ -67,10 +67,19 @@ a {
    color: $linkcolor;
    text-decoration: none;
 }
-h1, h2, h3{padding-top: 15px; @include textshadow();}
+h1, h2, h3{padding-top: 15px; padding-bottom: 5px;
+  @include textshadow();}
+h4{
+  @include textshadow(); 
+  text-align: left;
+  font-size: 1.4em;
+}
 ul, p{padding-top: 15px;}
-img{align: middle;}
 ul{padding-left: 25px;}
+img{
+  display: block;
+  margin: auto;
+}
 header{
   position: fixed;
   top: 0px;
@@ -93,19 +102,22 @@ footer {
   position: fixed;
   bottom: 0px;
   height: 35px;
-  line-height: 17px;
+  line-height: 5px;
   width: 100%;
   text-align: right;
   display: inline-table;
+  padding-right: 15px;
   @include barbackground();
   @include shadow();
 }
 
+q{
+  font: italic 2.4em Palatino, Times, Georgia;
+}
 figure{
   margin: 0;
   position: relative;
   display: block;
-
 }
 
 figcaption {
@@ -115,15 +127,15 @@ figcaption {
   box-sizing: border-box;
   webkit-box-sizing: border-box;
   padding: 10px;
-  background: rgba(255, 255, 255, 0.75);
-  width: 100%
+  width: 100%;
+  background-color: rgba(229, 229, 229, 0.90);
 }
 
 td {
   padding: 0 3px 0 3px;
 }
 
-.imagetile{
+.imagetiles{
   @include columns;
 }
 
@@ -148,7 +160,9 @@ td {
     &:active { color: #fff;}
   }
 }
-
+.showadmin{
+  text-align: right;
+}
 #search {
   float: right;
   position: relative;
@@ -181,6 +195,12 @@ td {
   float:right;
   position: relative;
   margin-top: -3px;
+}
+
+#logo{
+  float: left;
+  padding-top: 2px;
+  padding-left: 20px;
 }
 
 //Type

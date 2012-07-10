@@ -39,24 +39,16 @@ end
 
 class Folio
   include Mongoid::Document
-  field :title, type: String, label: :_id
-  field :thumbnail, type: String 
+  field :title, type: String
+  field :thumb, type: String
+  field :thumburl, type: String
+  field :paragraph, type: Array
   field :updated, type: DateTime, default: nil
   field :created, type: DateTime, default: ->{ Time.now }
   field :tag, type: Array, default: nil
-  has_many :contents, dependent: :delete
-  validates_presence_of :title, :thumbnail, :contents, :tag
+  validates_presence_of :title, :thumb, :paragraph, :tag, :created
   validates_uniqueness_of :title
-end
-
-
-class Content
-  include Mongoid::Document
-  field :title, type: String
-  field :block, type: String
-  belongs_to :folio
-  validates_presence_of :title, :block
-  validates_uniqueness_of :title
+  
 end
 
 class Quote
@@ -68,6 +60,12 @@ class Quote
 end
 
 #~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
+class Time
+  def humanize
+    self.strftime("%A, %B #{self.day.ordinalize}, %Y")
+  end
+end
+#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#~#
 
 helpers do
   # SESSIONS #  
@@ -78,7 +76,7 @@ helpers do
   def generate_form(model, obj=nil)
     a = ""
     # gets all field names and generate a dynamic input for each and inputs the obj value if generating a form for edit
-    model.classify.constantize.fields.keys[2..model.classify.constantize.fields.keys.count-2].each{|v| a << dynamicinput(v, model+"[#{v}]", obj.nil? ? (nil) : (obj[v])) unless v ==("created"||"updated")}
+    model.classify.constantize.fields.keys[2..model.classify.constantize.fields.keys.count-1].each{|v| a << dynamicinput(v, model+"[#{v}]", obj.nil? ? (nil) : (obj[v])) unless v ==("created"||"updated")}
     # gets the association keys for this model and for each one of them...
     model.classify.constantize.associations.keys.each do |v|
       # check if there the association exists on obj, do 0 to 1 if it exists, or up to the length of that association if it doesn't
@@ -159,16 +157,27 @@ end
 
 # REST #
 
-get '/folio/new/' do
+get '/folio/new' do
   haml :newedit
 end
-post '/folio/:title' do
+
+post '/folio/' do
   authorized?
+  data = Folio.find_by(title: params[:_id])
   if data.nil? then
-    status 404
+    data = params[:folio]
+    folio = Folio.new( #~#~#~ add stuff here! remember the comma
+      title: data[:title].downcase.gsub(/\s/, '_'),
+      thumb: data[:thumb],
+      thumburl: data[:thumburl],
+      paragraph: data[:paragraph].to_a,
+      updated: Time.now,
+      tag: (tagarray data[:tag])
+    ) 
+    !folio.save ? (status 500) : (status 200; redirect '/folio/show/data[:title]')
   else
     updated = false
-    %w(:title, :tag :content).each do |k| #~#~#~ You need to put what fields to update
+    %w(:title, :thumb, :thumburl, :paragraph, :tag).each do |k| #~#~#~ You need to put what fields to update
       if data.has_key? k
         folio[k] = data[k]
         updated = true
@@ -176,7 +185,7 @@ post '/folio/:title' do
     end
     if updated then
       folio[:updated] = Time.now
-    !folio.save ? (status 500) : (status 200)
+      !folio.save ? (status 500) : (status 200; redirect '/folio/show/data[:title]')
     end
   end
 end
@@ -219,14 +228,13 @@ put '/folio/:title' do
     status 404
   else
     folio = Folio.new( #~#~#~ add stuff here! remember the comma
-      title: data[:title].downcase.gsub(/\s/, '_'),
+      title: data[:title].gsub(/\s/, '_'),
+      thumb: data[:thumb],
+      thumburl: data[:thumburl],
+      paragraph: data[:paragraph].to_a,
       updated: Time.now,
       tag: (tagarray data[:tag])
     ) 
-    data[:content].length.each_with_index do |datacontent, i|
-      folio[:content][i][:title] = datacontent[i][:title]
-      folio[:content][i][:block] = datacontent[i][:block]
-    end
     folio.save
     status 200
   end
@@ -256,7 +264,6 @@ get '/js/run.js' do
 end
 
 get "/?" do
- 
   d = Quote.count-1
   quote = Quote.desc[rand 0..d]
   if quote.nil? then
@@ -286,10 +293,12 @@ __END__
     #footer= haml :_login
   %script{:src => "/js/right.js"}
   %script{:src => "/js/run.js"}
+  %script{:src => "/js/right-lightbox.js"}
 
 @@_nav
 .nav
-  %a{href: '/'}> &thetasym; 
+  %a{href: '/'}> 
+    %img{src: "/images/logo.png", id:"logo"} 
   %a{href: '/folio/'}> Portfolio 
   %a{href: 'mailto:markpoon@me.com'}> Contact Me
   #loginimage
@@ -320,10 +329,12 @@ __END__
     %input{:type => "text", :name => "search", :class => "search", :placeholder => "Search Tags"}
 @@index
 .row
-  .twelvecol
-    %h1=@quote.quotation
+  .twelvecol{style: "padding-top:20px;"}
+    %q=@quote.quotation
     %p{align: "right"}=@quote.author
 .row
+  .twelvecol
+    %hr
   .fourcol
     = markdown File.read("./views/index/bio.md")
   .fourcol
@@ -335,39 +346,45 @@ __END__
 .imagetiles
   -@folio.each do |folio|
     %figure
-      %a{href: "/folio/#{folio[:title]}"}>
-        %img{src: folio[:thumbnail]}
+      %a{href: (folio[:thumburl].nil? ? (folio.thumb) : (folio.thumburl)), rel: "lightbox"}>
+        %img{src: folio[:thumb] }
       %figcaption
         %table{align: "right"}
           %tr
-            %td{width: "100%"}
-              %a{href: "/folio/#{folio[:title]}"}>
-                %h2=folio[:title].humanize.titlecase
+            %td
+              %a{href: "/folio/#{folio[:title]}"}
+                %h4=folio[:title].gsub('_', ' ')
             - folio.tag.each do |t|      
               %td
                 .tag
                   %a{href: "/search/#{t}"}>=t
 
+
 @@show
 %br
 .row
-  %table
-    %tr
-      %td
-        %h2=@folio[:title].humanize.titlecase
-      - @folio.tag.each do |t|      
-        %td
-          .tag
-            %a{href: "/search/#{t}"}>=t
-.row
-  - @folio.contents.each do |content|
-    = markdown content.block
+  .eightcol
+    %h1=@folio[:title].gsub('_', ' ')
+  .fourcol.last{align: "right"}
+    - @folio.tag.each do |t|              
+      .tag
+        %a{href: "/search/#{t}"}>=t
+    %br
+    =@folio[:created].humanize
+  .twelvecol
+    %hr
+  - @folio.paragraph.each do |p|
+    .twelvecol
+      = markdown p
+    .twelvecol
+      %hr
 =haml :_admincontrol
   
 @@newedit
-%form{:action=>"/folio/:title", :method=>"put"}
+%form{:action=>"/folio/", :method=>"post"}
   %ul
     = generate_form("folio", @folio)
+  %input{:name=> "_id", :value=> "#{@folio._id}", :type=>"hidden"}
   %input{:type => 'submit', :value => 'save', :class => 'button'}
 
 @@_input
@@ -376,11 +393,18 @@ __END__
   %input{:name => db, :value => value}
    
 @@_admincontrol
-.row
-  .twelvecol
-    -if authorized?
-      %form{:action => "/folio/edit/#{@folio.title}", :method => "update"}
-        %input{:type => 'submit', :value => 'Update', :class => 'button'}
-      %form{:action => "/folio/#{@folio.title}", :method => "post"}
-        %input{:name=> "_method", :value=>"delete", :type=>"hidden"}
-        %input{:type => 'submit', :value => 'Delete', :class => 'button'}
+-if @user
+  .row
+    .twelvecol.showadmin
+      %table
+        %tr
+          %td
+            %form{:action => "/folio/new", :method => "get"}
+              %input{:type => 'submit', :value => 'New', :class => 'button'}
+          %td
+            %form{:action => "/folio/edit/#{@folio.title}", :method => "update"}
+              %input{:type => 'submit', :value => 'Update', :class => 'button'}
+          %td
+            %form{:action => "/folio/#{@folio.title}", :method => "post"}
+              %input{:name=> "_method", :value=>"delete", :type=>"hidden"}
+              %input{:type => 'submit', :value => 'Delete', :class => 'button'}
