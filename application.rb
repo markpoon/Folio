@@ -108,6 +108,12 @@ before do
   if session[:user] then @user = session[:user] end
 end
 
+get '/search/:search' do
+  @folio = search params[:search]
+  binding.pry
+  haml :'folioindex'
+end
+
 post '/search' do
   @folio = search params[:search]
   haml :'folioindex'
