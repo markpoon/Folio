@@ -1,5 +1,5 @@
 ##Best Videos
-Pretty much all of TEDTalks, Voyager, Battlestar Galactica, The Fountain, Dune 2000, The Matrix, The Game, Sunshine, Vanilla Sky, Watchmen, 300, Inception.
+Pretty much all of TEDTalks, Voyager, Battlestar Galactica,(up to mid 4th season, don't watch any further than that) The Fountain, Dune 2000, The Matrix(Sequels? What sequels?), The Game, Sunshine, Vanilla Sky, Watchmen, 300, Inception.
 
 ##Best Comics
 Sandman, Fables, Lucifer, Watchmen, Books of Magic, The Invisibles, Transmetropolitan, Global Frequency.
