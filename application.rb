@@ -293,22 +293,19 @@ __END__
   %body
     %header
       = haml :_nav
-  %container
-    = yield
-  %footer
-    #footer= haml :_login
-  %script{:src => "/js/right.js"}
-  %script{:src => "/js/run.js"}
-  %script{:src => "/js/right-lightbox.js"}
+    %container
+      = yield
+    %footer
+      #footer= haml :_login
+  %script{:src => "/js/core-1.1.0.js", :type => "text/javascript"}
+  %script{:src => "/js/run.js", :type => "text/javascript"}
 
 @@_nav
 .nav
-  %a{href: '/'}> 
-    %img{src: "/images/logo.png", id:"logo"} 
-  %a{href: '/folio/'}> Portfolio 
-  %a{href: 'mailto:markpoon@me.com'}> Contact Me
-  #loginimage
-    %img{src: "/images/login.png"}
+  %a.lui-icon-home{href: '/', title: "Home"}
+  %a.lui-icon-picture{href: '/folio/', title: "Portfolio"}
+  %a.lui-icon-envelope-alt{href: 'mailto:markpoon@me.com', title: "Contact Me"}
+  %a#loginimage.lui-icon-wrench
   = haml :_search
   
 @@_login
@@ -335,7 +332,7 @@ __END__
     %input{:type => "text", :name => "search", :class => "search", :placeholder => "Search Tags"}
 @@index
 .row
-  .twelvecol{style: "padding-top:20px;"}
+  .twelvecol{style: "padding-top:40px;"}
     %q=@quote.quotation
     %p{align: "right"}=@quote.author
 .row
@@ -344,23 +341,22 @@ __END__
   .fourcol
     = markdown File.read("./views/index/bio.md")
   .fourcol
-    = markdown File.read("./views/index/purpose.md")
-  .fourcol.last
     = markdown File.read("./views/index/tools.md")
-
+  .fourcol.last
+    = markdown File.read("./views/index/whoami.md")
 @@folioindex
 .imagetiles
   -@folio.each do |folio|
     %figure
-      %a{href: (folio[:thumburl].nil? ? (folio.thumb) : (folio.thumburl)), rel: "lightbox"}>
-        %img{src: folio[:thumb] }
+      %a.tip{href: folio.thumburl, "data-zoom" => ''}
+        %img{src: folio.thumb}
       %figcaption
         %table{align: "right"}
           %tr
             %td
               %a{href: "/folio/#{folio[:title]}"}
                 %h4=folio[:title].gsub('_', ' ')
-            - folio.tag.each do |t|      
+            - folio.tag.each do |t|
               %td
                 .tag
                   %a{href: "/search/#{t}"}>=t

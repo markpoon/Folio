@@ -62,7 +62,7 @@ input[type= "button"]{
 }
 
 a {
-   &:hover { color: $hilite; text-decoration: underline;}
+   &:hover { color: $hilite; text-decoration: none;}
    &:active { color: $hilite;}
    color: $linkcolor;
    text-decoration: none;
@@ -76,10 +76,6 @@ h4{
 }
 ul, p{padding-top: 15px;}
 ul{padding-left: 25px;}
-img{
-  display: block;
-  margin: auto;
-}
 header{
   position: fixed;
   top: 0px;
@@ -118,9 +114,24 @@ figure{
   margin: 0;
   position: relative;
   display: block;
+  & img{ opacity: .66; }
+  &:hover img{ 
+    opacity: 1;
+    -webkit-transition: all 0.7s ease 0s;
+    -moz-transition: all 0.7s ease 0s;
+    -o-transition: all 0.7s ease 0s;
+    transition: all 0.7s ease 0s;
+  }
+  &:hover figcaption{ background-color: rgb(239, 244, 175); 
+    -webkit-transition: all 0.7s ease 0s;
+    -moz-transition: all 0.7s ease 0s;
+    -o-transition: all 0.7s ease 0s;
+    transition: all 0.7s ease 0s;
+    }
 }
 
 figcaption {
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
   position: absolute;
   bottom: 0;
   -moz-box-sizing: border-box;
@@ -128,7 +139,7 @@ figcaption {
   webkit-box-sizing: border-box;
   padding: 10px;
   width: 100%;
-  background-color: rgba(229, 229, 229, 0.90);
+  background-color: rgba(229, 229, 229, 1);
 }
 
 td {
@@ -141,6 +152,11 @@ td {
 
 .nav {
   margin-top: 3px;
+  & a{
+    color: #7c7c7c;
+    &:hover { color: #2c2c2c;}
+    &:active { color: #2c2c2c;}
+  }
 }
 
 .tag {
@@ -150,7 +166,7 @@ td {
   background-color: #4488aa;
   @include rounded(6px);
   padding: 0 5px 0 5px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   display:inline-block;
   &:hover {background-color: #8ebed4; text-decoration: underline;
   }
@@ -191,18 +207,9 @@ td {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);}
 }
-#loginimage{
-  float:right;
-  position: relative;
-  margin-top: -3px;
-}
 
 #logo{
   float: left;
   padding-top: 2px;
   padding-left: 20px;
 }
-
-//Type
-
-

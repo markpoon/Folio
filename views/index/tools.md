@@ -1,10 +1,8 @@
-##What We Create
-The next technical skills I will learn will probably be:
+##Tools for The Future
+The tool I will master for the Future will be 3d printing (+nanotech depending how fast it develops). Right now, cheap 3d printers are enthusiast toys and edging every closer to obsolescing factories, I will be a part of it. The far future skills I will learn will be:
 
-* electronics
-* automated manufacturing through 3d printers
+* network objects
+* on-demand 3d printing
 * cloud-based genomics computing
 
-The current paradigm tends to shift toward ever more refined methods and a horizontal increase of control over a technology, the tendency is the same for 3d printing and Nanotech. Right now, cheap 3d printers are enthusiast toys, they are not large enough. 
-
-But one day these '3d printers' , assemble material together. It will replace malls in the future, as everyone orders the piece online(but this term of course would be antiquated by then, what they have will be so much more than just the internet), the order is sent to the assembler and the machine will pop out your new sofa! I imagine families driving to this big white building to pick up the wares, but that's just the idealist in me, it will be shipped from china.
+Everything is just information in the end, whether it is in your cellphone, speech or your brain, it is just information dancing across silica pathways, electricity jumping between neurons, DNA transcribed from cell to cell. Everything is just a pretty patterns dancing across some medium and one day soon the barrier between circuits and our minds will dissolve. The first AI will not be some emotionless machine but humans upgraded.
