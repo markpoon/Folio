@@ -33,7 +33,7 @@
   -moz-column-gap: $gap;
   -webkit-column-gap: $gap;
   column-gap: $gap;
-  
+
   @media screen and (max-width: 1600px) {
     -moz-column-count: 3;
     -webkit-column-count: 3;
@@ -63,6 +63,8 @@ hr {
     height: 2px;
     *height: 4px; /* IE6+7 need the total height */
     width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
     }
 
 /*

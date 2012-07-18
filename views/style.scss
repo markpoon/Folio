@@ -62,11 +62,12 @@ input[type= "button"]{
 }
 
 a {
-   &:hover { color: $hilite; text-decoration: none;}
+   &:hover { color: $hilite; text-decoration: underline;}
    &:active { color: $hilite;}
    color: $linkcolor;
-   text-decoration: none;
+   text-decoration: underline;
 }
+
 h1, h2, h3{padding-top: 15px; padding-bottom: 5px;
   @include textshadow();}
 h4{
@@ -74,8 +75,10 @@ h4{
   text-align: left;
   font-size: 1.4em;
 }
-ul, p{padding-top: 15px;}
-ul{padding-left: 25px;}
+.row{
+  & ul, p{padding-top: 15px;}
+  & ul{padding-left: 25px;} 
+}
 header{
   position: fixed;
   top: 0px;
@@ -111,18 +114,26 @@ q{
   font: italic 2.4em Palatino, Times, Georgia;
 }
 figure{
-  margin: 0;
-  position: relative;
-  display: block;
-  & img{ opacity: .66; }
-  &:hover img{ 
+  break-inside: avoid-column;
+  -webkit-column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  margin: 0 10px 30px 10px;
+  @include shadow();
+  & li {
+  list-style: none;
+  margin:0;
+  padding:0;
+}
+  & img{ opacity: .4;
+}
+  & img:hover{ 
     opacity: 1;
     -webkit-transition: all 0.7s ease 0s;
     -moz-transition: all 0.7s ease 0s;
     -o-transition: all 0.7s ease 0s;
     transition: all 0.7s ease 0s;
   }
-  &:hover figcaption{ background-color: rgb(239, 244, 175); 
+  &:hover figcaption{ background-color: rgb(208, 208, 208);   
     -webkit-transition: all 0.7s ease 0s;
     -moz-transition: all 0.7s ease 0s;
     -o-transition: all 0.7s ease 0s;
@@ -131,9 +142,10 @@ figure{
 }
 
 figcaption {
+  & a{text-decoration: none;}
   border-top: 1px solid rgba(255, 255, 255, 0.6);
   position: absolute;
-  bottom: 0;
+  top: 0;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   webkit-box-sizing: border-box;
@@ -154,6 +166,9 @@ td {
   margin-top: 3px;
   & a{
     color: #7c7c7c;
+    text-decoration: none;
+    font-size: 1.5em;
+    text-shadow: 1px 1px 1px #ffffff;
     &:hover { color: #2c2c2c;}
     &:active { color: #2c2c2c;}
   }
@@ -179,12 +194,18 @@ td {
 .showadmin{
   text-align: right;
 }
+.read{
+  font-size: .7em;
+  font-style: italic;
+  color: rgb(69, 69, 69);
+}
 #search {
   float: right;
   position: relative;
   margin-top: -1px;
   text-align: center;
   display: inline-table;
+  margin-right: 10px;
   & input[type="text"] {
     background: url("./images/search-dark.png") no-repeat 10px 6px #fcfcfc;
     border: 0 none;

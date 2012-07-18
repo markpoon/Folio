@@ -40,8 +40,8 @@ end
 class Folio
   include Mongoid::Document
   field :title, type: String
-  field :thumb, type: String
-  field :thumburl, type: String
+  field :thumb, type: Array
+  field :thumburl, type: Array
   field :paragraph, type: Array
   field :updated, type: DateTime, default: nil
   field :created, type: DateTime, default: ->{ Time.now }
@@ -245,6 +245,7 @@ put '/folio/:title' do
     status 200
   end
 end
+
 delete '/folio/:title' do
   authorized?
   folio = Folio.find_by(title: params[:title])
@@ -255,8 +256,6 @@ delete '/folio/:title' do
     redirect '/folio/'
   end
 end
-
-
 
 # INTERFACE #
 get "/style.css" do
@@ -272,11 +271,14 @@ end
 get "/?" do
   d = Quote.count-1
   quote = Quote.desc[rand 0..d]
+  d = Folio.count-1
+  folio = Folio.desc[rand 0..d]
   if quote.nil? then
     status 404
   else
     status 200
     @quote = quote
+    @folio = folio
     haml :index
   end
 end
@@ -330,37 +332,55 @@ __END__
 #search
   %form{:action=>"/search", :method=>"post", :id=>"search"}
     %input{:type => "text", :name => "search", :class => "search", :placeholder => "Search Tags"}
+
 @@index
-.row
-  .twelvecol{style: "padding-top:40px;"}
-    %q=@quote.quotation
-    %p{align: "right"}=@quote.author
-.row
-  .twelvecol
-    %hr
-  .fourcol
+.row{style: "padding-top:20px;"}
+  .fivecol
     = markdown File.read("./views/index/bio.md")
   .fourcol
     = markdown File.read("./views/index/tools.md")
-  .fourcol.last
+    %hr
+    %q=@quote.quotation
+    %p{align: "right"}=@quote.author
+    %hr
+    %h2 Random Project
+    %table{style:"margin-bottom:10px;margin-top:5px;", align:"right"}
+      %tr
+        %td
+          %a{href: "/folio/#{@folio[:title]}"}
+            =@folio[:title].gsub('_', ' ')
+        - @folio.tag.each do |t|
+          %td
+            .tag
+              %a{href: "/search/#{t}"}>=t
+    %a{href: @folio.thumburl[0], "data-zoom" => ''}
+      %img{src: @folio.thumb[0]}
+  .threecol.last
     = markdown File.read("./views/index/whoami.md")
+    
 @@folioindex
 .imagetiles
   -@folio.each do |folio|
     %figure
-      %a.tip{href: folio.thumburl, "data-zoom" => ''}
-        %img{src: folio.thumb}
+      %table
+        %ul
+          -folio.thumb.each_with_index do |image, i|
+            %li
+              %a{href: folio.thumburl[i], "data-zoom" => ''}
+                %img{src: image}
       %figcaption
-        %table{align: "right"}
+        %table{align: "right", valign: 'bottom'}
           %tr
-            %td
+            %td{style: "margin: 0;padding: 0;"}
               %a{href: "/folio/#{folio[:title]}"}
                 %h4=folio[:title].gsub('_', ' ')
+            %td
+              %a{href: "/folio/#{folio[:title]}"}
+                .read Read More...
             - folio.tag.each do |t|
               %td
                 .tag
                   %a{href: "/search/#{t}"}>=t
-
 
 @@show
 %br
