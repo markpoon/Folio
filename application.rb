@@ -269,10 +269,13 @@ get '/js/run.js' do
 end
 
 get "/?" do
-  d = Quote.count-1
-  quote = Quote.desc[rand 0..d]
-  d = Folio.count-1
-  folio = Folio.desc[rand 0..d]
+  n = Quote.count-1
+  quote = Quote.desc[rand 0..n]
+  n = Folio.count-1
+  folio = []
+  0.upto(rand 1..2) do
+    folio << Folio.all[rand 0..n]
+  end
   if quote.nil? then
     status 404
   else
@@ -311,16 +314,21 @@ __END__
   = haml :_search
   
 @@_login
-- if @user
-  %span
-    %p
-      You are logged in as #{@user.email}
-      %a{:href => '/logout'} Logout
-- else
-  %form.login{:action => "/login", :method => "post"}
-    %input#login{:name => "login", :placeholder => "Login", :type => "text"}/
-    %input#password{:name => "password", :placeholder => "Password", :type => "password"}/
-    %input#loginer{:name => "submit", :type => "submit", :value => "Login"}/
+%table
+  %tr
+    %td{style: "width:100%; text-align:left; padding-left:20px;"}
+      &reg Mark Poon
+    %td{style: "width:auto;", nowrap: "nowrap"}
+      - if @user
+        %span
+          %p
+            You are logged in as #{@user.email}
+            %a{:href => '/logout'} Logout
+      - else
+        %form.login{:action => "/login", :method => "post"}
+          %input#login{:name => "login", :placeholder => "Login", :type => "text"}/
+          %input#password{:name => "password", :placeholder => "Password", :type => "password"}/
+          %input#loginer{:name => "submit", :type => "submit", :value => "Login"}/
 
 @@_register
 %form.register{:action => '/register', :method => 'post'}
@@ -334,27 +342,24 @@ __END__
     %input{:type => "text", :name => "search", :class => "search", :placeholder => "Search Tags"}
 
 @@index
-.row{style: "padding-top:20px;"}
+.row{style: "padding-top:15px; padding-bottom:40px"}
   .fivecol
     = markdown File.read("./views/index/bio.md")
   .fourcol
-    = markdown File.read("./views/index/tools.md")
+    %h2 Random Projects
+    %br
+    -@folio.each do |folio|    
+      %figure
+        %a{href: folio.thumburl[0], "data-zoom" => ''}
+          %img{src: folio.thumb[0]}
+        .readmore
+          %a{href: "/folio/#{folio[:title]}"}
+            =folio[:title].gsub('_', ' ')
     %hr
     %q=@quote.quotation
     %p{align: "right"}=@quote.author
     %hr
-    %h2 Random Project
-    %table{style:"margin-bottom:10px;margin-top:5px;", align:"right"}
-      %tr
-        %td
-          %a{href: "/folio/#{@folio[:title]}"}
-            =@folio[:title].gsub('_', ' ')
-        - @folio.tag.each do |t|
-          %td
-            .tag
-              %a{href: "/search/#{t}"}>=t
-    %a{href: @folio.thumburl[0], "data-zoom" => ''}
-      %img{src: @folio.thumb[0]}
+    = markdown File.read("./views/index/tools.md")
   .threecol.last
     = markdown File.read("./views/index/whoami.md")
     
@@ -371,16 +376,16 @@ __END__
       %figcaption
         %table{align: "right", valign: 'bottom'}
           %tr
-            %td{style: "margin: 0;padding: 0;"}
+            %td{style: "width:100%; text-align:left;"}
               %a{href: "/folio/#{folio[:title]}"}
                 %h4=folio[:title].gsub('_', ' ')
-            %td
-              %a{href: "/folio/#{folio[:title]}"}
-                .read Read More...
             - folio.tag.each do |t|
-              %td
+              %td{style: "width:auto;", nowrap: "nowrap"}
                 .tag
                   %a{href: "/search/#{t}"}>=t
+      .readmore
+        %a{href: "/folio/#{folio[:title]}"}
+          read more
 
 @@show
 %br
