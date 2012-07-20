@@ -99,6 +99,13 @@ helpers do
   def search(pattern="")
     Folio.in('tag' => pattern.strip.gsub(/(\^\s\*|\d)/, "").gsub(/\s+/, " ").split(", "))
   end
+  def checkIfVideo(url)
+    (url =~ /http\:\/\/www\.youtube\.com\/embed\//) == 0
+  end
+  def emitYoutubePlayer(url)
+    "<iframe id='ytplayer' type='text/html' width='100%' src='#{url}' frameborder='0'/>"
+  end
+  #http://www.youtube.com/embed/u1zgFlCw8Aw?autoplay=1&origin=http://example.com
 end
 
 
@@ -269,6 +276,7 @@ get '/js/run.js' do
 end
 
 get "/?" do
+  binding.pry
   n = Quote.count-1
   quote = Quote.desc[rand 0..n]
   n = Folio.count-1
@@ -317,7 +325,7 @@ __END__
 %table
   %tr
     %td{style: "width:100%; text-align:left; padding-left:20px;"}
-      &reg Mark Poon
+      &reg &#8734; Mark Poon
     %td{style: "width:auto;", nowrap: "nowrap"}
       - if @user
         %span
@@ -367,14 +375,16 @@ __END__
 .imagetiles
   -@folio.each do |folio|
     %figure
-      %table
-        %ul
-          -folio.thumb.each_with_index do |image, i|
-            %li
+      %ul
+        -folio.thumb.each_with_index do |image, i|
+          %li
+            -if checkIfVideo(folio.thumburl[i])
+              %iframe{id: 'ytplayer', width: '100%', height: '40%', src: folio.thumburl[i], frameborders: '0'}
+            -else
               %a{href: folio.thumburl[i], "data-zoom" => ''}
                 %img{src: image}
       %figcaption
-        %table{align: "right", valign: 'bottom'}
+        %table{align: 'right', valign: 'bottom'}
           %tr
             %td{style: "width:100%; text-align:left;"}
               %a{href: "/folio/#{folio[:title]}"}
