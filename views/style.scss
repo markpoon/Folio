@@ -38,7 +38,6 @@ html {
 }
 
 body {
-  height: 100%;
   padding-top: 40px;
   padding-bottom: 30px;
 }
@@ -262,9 +261,4 @@ figcaption {
     -moz-box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);}
-}
-#bodyFooterGradient{
-  padding-bottom: 40px;
-  -webkit-box-shadow: inset 0px -30px 60px 0px rgba(10, 5, 20, .33);
-  box-shadow: inset 0px -30px 60px 0px rgba(10, 5, 20, .33);
 }
