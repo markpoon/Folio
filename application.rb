@@ -379,16 +379,17 @@ __END__
         -folio.thumb.each_with_index do |image, i|
           %li
             -if checkIfVideo(folio.thumburl[i])
-              %iframe{id: 'ytplayer', width: '100%', height: '40%', src: folio.thumburl[i], frameborders: '0'}
+              %a{href: folio.thumburl[i], target: '_blank'}
+                %img{src: image}
             -else
               %a{href: folio.thumburl[i], "data-zoom" => ''}
                 %img{src: image}
       %figcaption
-        %table{align: 'right', valign: 'bottom'}
-          %tr
-            %td{style: "width:100%; text-align:left;"}
-              %a{href: "/folio/#{folio[:title]}"}
-                %h4=folio[:title].gsub('_', ' ')
+        %div{style: 'overflow:hidden'}
+          %div{style: "text-align:left; float:left;"}
+            %a{href: "/folio/#{folio[:title]}"}
+              %h4=folio[:title].gsub('_', ' ')
+          %div{style: "float:right"}
             - folio.tag.each do |t|
               %td{style: "width:auto;", nowrap: "nowrap"}
                 .tag
