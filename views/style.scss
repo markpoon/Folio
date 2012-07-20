@@ -38,8 +38,11 @@ html {
 }
 
 body {
+  height: 100%;
   padding-top: 40px;
+  padding-bottom: 30px;
 }
+
 input[type="text"], input[type="password"] {
   background: #fff;
   border: 0 none;
@@ -167,12 +170,10 @@ figcaption {
   background-color: rgba(229, 229, 229, 1);
 }
 
-td {
-  padding: 0 3px 0 3px;
-}
-
 .imagetiles{
   @include columns;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .nav {
@@ -262,9 +263,8 @@ td {
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1), 0 1px 0 rgba(0, 0, 0, 0.9) inset;
     text-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);}
 }
-
-#logo{
-  float: left;
-  padding-top: 2px;
-  padding-left: 20px;
+#bodyFooterGradient{
+  padding-bottom: 40px;
+  -webkit-box-shadow: inset 0px -30px 60px 0px rgba(10, 5, 20, .33);
+  box-shadow: inset 0px -30px 60px 0px rgba(10, 5, 20, .33);
 }
