@@ -357,12 +357,12 @@ __END__
     %br
     -@folio.each do |folio|    
       %figure
-        -if checkIfVideo(folio.thumburl[i])
-          %a{href: folio.thumburl[i], target: '_blank'}
-            %img{src: image}
+        -if checkIfVideo(folio.thumburl[0])
+          %a{href: folio.thumburl[0], target: '_blank'}
+            %img{src: folio.thumb[0]}
         -else
-          %a{href: folio.thumburl[i], "data-zoom" => ''}
-            %img{src: image}
+          %a{href: folio.thumburl[0], "data-zoom" => ''}
+            %img{src: folio.thumb[0]}
         .readmore
           %a{href: "/folio/#{folio[:title]}"}
             =folio[:title].gsub('_', ' ')
