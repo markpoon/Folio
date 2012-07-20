@@ -276,7 +276,6 @@ get '/js/run.js' do
 end
 
 get "/?" do
-  binding.pry
   n = Quote.count-1
   quote = Quote.desc[rand 0..n]
   n = Folio.count-1
