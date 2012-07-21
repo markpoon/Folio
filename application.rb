@@ -276,6 +276,7 @@ get '/js/run.js' do
 end
 
 get "/?" do
+  binding.pry
   n = Quote.count-1
   quote = Quote.desc[rand 0..n]
   n = (0..Folio.count-1).sort{ rand() - 0.5 }[0..(rand 1..2)]
@@ -359,10 +360,10 @@ __END__
       %figure
         -if checkIfVideo(folio.thumburl[0])
           %a{href: folio.thumburl[0], target: '_blank'}
-            %img{src: folio.thumb[0]}
+            %img{src: folio.thumb[0], alt: folio.title}
         -else
           %a{href: folio.thumburl[0], "data-zoom" => ''}
-            %img{src: folio.thumb[0]}
+            %img{src: folio.thumb[0], alt: folio.title}
         .readmore
           %a{href: "/folio/#{folio[:title]}"}
             =folio[:title].gsub('_', ' ')
@@ -383,10 +384,10 @@ __END__
           %li
             -if checkIfVideo(folio.thumburl[i])
               %a{href: folio.thumburl[i], target: '_blank'}
-                %img{src: image}
+                %img{src: image, alt: folio.title}
             -else
               %a{href: folio.thumburl[i], "data-zoom" => ''}
-                %img{src: image}
+                %img{src: image, alt: folio.title}
       %figcaption
         %div{style: 'overflow:hidden'}
           %div{style: "text-align:left; float:left;"}
@@ -404,7 +405,7 @@ __END__
 @@show
 %br
 .row
-  .eightcol
+  .eightcol{contenteditable: true}
     %h1=@folio[:title].gsub('_', ' ')
   .fourcol.last{align: "right"}
     - @folio.tag.each do |t|              
