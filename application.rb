@@ -159,13 +159,14 @@ end
 
 get '/folio/' do
   n = (0..Folio.count-1).sort{ rand() - 0.5 }
-  folio = Folio.all
+  folioOrdered = Folio.all
+  folio = []
+  folioOrdered.count.times{|i| folio << folioOrdered[n[i]] }
   if folio.nil? then
     status 404
   else
     status 200
     @folio = folio
-    @n = n
     haml :folioindex
   end
 end
@@ -378,29 +379,29 @@ __END__
     
 @@folioindex
 .imagetiles
-  -@n.each do |n|
+  -@folio.each do |folio|
     %figure
       %ul
-        -@folio[n].thumb.each_with_index do |image, i|
+        -folio.thumb.each_with_index do |image, i|
           %li
-            -if checkIfVideo(@folio[n].thumburl[i])
-              %a{href: @folio[n].thumburl[i], target: '_blank'}
-                %img{src: image, alt: @folio[n].title}
+            -if checkIfVideo(folio.thumburl[i])
+              %a{href: folio.thumburl[i], target: '_blank'}
+                %img{src: image, alt: folio.title}
             -else
-              %a{href: @folio[n].thumburl[i], "data-zoom" => ''}
-                %img{src: image, alt: @folio[n].title}
+              %a{href: folio.thumburl[i], "data-zoom" => ''}
+                %img{src: image, alt: folio.title}
       %figcaption
         %div{style: 'overflow:hidden'}
           %div{style: "text-align:left; float:left;"}
-            %a{href: "/folio/#{@folio[n][:title]}"}
-              %h4=@folio[n][:title].gsub('_', ' ')
+            %a{href: "/folio/#{folio[:title]}"}
+              %h4=folio[:title].gsub('_', ' ')
           %div{style: "float:right"}
-            - @folio[n].tag.each do |t|
+            - folio.tag.each do |t|
               %td{style: "width:auto;", nowrap: "nowrap"}
                 .tag
                   %a{href: "/search/#{t}"}>=t
       .readmore
-        %a{href: "/folio/#{@folio[n][:title]}"}
+        %a{href: "/folio/#{folio[:title]}"}
           read more
 
 @@show

@@ -151,7 +151,7 @@ figure{
     -o-transition: all 0.7s ease 0s;
     transition: all 0.7s ease 0s;
   }
-  &:hover figcaption{ background-color: rgb(208, 208, 208);   
+  &:hover figcaption{ background-color: rgb(229, 229, 229);   
     -webkit-transition: all 0.7s ease 0s;
     -moz-transition: all 0.7s ease 0s;
     -o-transition: all 0.7s ease 0s;
@@ -159,16 +159,12 @@ figure{
     }
   &:hover .readmore{ 
     visibility: visible;  
-    -webkit-transition: all 0.7s ease 0s;
-    -moz-transition: all 0.7s ease 0s;
-    -o-transition: all 0.7s ease 0s;
-    transition: all 0.7s ease 0s;
   }
 }
 
 figcaption {
   & a{text-decoration: none;}
-  border-top: 1px solid rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.8);
   position: absolute;
   top: 0;
   -moz-box-sizing: border-box;
@@ -176,7 +172,11 @@ figcaption {
   webkit-box-sizing: border-box;
   padding: 10px;
   width: 100%;
-  background-color: rgba(229, 229, 229, 1);
+  background-color: rgba(229, 229, 229, .7);
+  -webkit-transition: all 0.7s ease 0s;
+  -moz-transition: all 0.7s ease 0s;
+  -o-transition: all 0.7s ease 0s;
+  transition: all 0.7s ease 0s;
 }
 
 .imagetiles{
