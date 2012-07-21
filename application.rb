@@ -278,10 +278,10 @@ end
 get "/?" do
   n = Quote.count-1
   quote = Quote.desc[rand 0..n]
-  n = Folio.count-1
+  n = (0..Folio.count-1).sort{ rand() - 0.5 }[0..(rand 1..2)]
   folio = []
-  0.upto(rand 1..2) do
-    folio << Folio.all[rand 0..n]
+  n.each do |n|
+    folio << Folio.all[n]
   end
   if quote.nil? then
     status 404
