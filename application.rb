@@ -97,7 +97,8 @@ helpers do
   end
   def tagarray(t); t.strip.gsub(/(\^\s\*|\d)/, "").gsub(/\s+/, " ").split(", "); end
   def search(pattern="")
-    Folio.in('tag' => pattern.strip.gsub(/(\^\s\*|\d)/, "").gsub(/\s+/, " ").split(", "))
+    s = pattern.strip.gsub(/(\^\s\*|\d)/, "").downcase.gsub(/\s+/, " ").split(", ")
+    Folio.or({:tag.in => s}, {:name.in => s})
   end
   def checkIfVideo(url)
     (url =~ /http\:\/\/www\.youtube\.com\/embed\//) == 0
@@ -117,12 +118,12 @@ end
 
 get '/search/:search' do
   @folio = search params[:search]
-  binding.pry
   haml :'folioindex'
 end
 
 post '/search' do
   @folio = search params[:search]
+  binding.pry
   haml :'folioindex'
 end
 

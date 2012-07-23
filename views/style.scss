@@ -187,6 +187,7 @@ figcaption {
 
 .nav {
   margin-top: 3px;
+  overflow: auto;
   & a{
     color: #7c7c7c;
     text-decoration: none;
@@ -198,15 +199,15 @@ figcaption {
 }
 
 .tag {
-  font-size: 10pt;
+  font-size: 8pt;
   font-weight: bold;
   text-shadow: #484848 1px 1px;
   background-color: #4488aa;
   @include rounded(6px);
-  padding: 0 5px 0 5px;
+  padding: 0 4px 0 4px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   display:inline-block;
-  &:hover {background-color: #8ebed4; text-decoration: underline;
+  &:hover {background-color: #8ebed4; text-decoration: ufnderline;
   }
   & a{
     color: #fff;
