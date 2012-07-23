@@ -236,6 +236,8 @@ end
 # * something and #. something for lists.
 # [display](url), ![]() for image
 
+
+
 put '/folio/:title' do
   authorized?
   data = Folio.find_by(title: params[:title])
@@ -302,6 +304,7 @@ __END__
 !!! 5
 %html
   %head
+    %meta{name: "viewport", content: "width=device-width"}
     %title="Theta"
     %link{:href => "/style.css", :rel => "stylesheet"}
     %script{:src => "/js/modernizr.js"}
