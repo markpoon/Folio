@@ -187,7 +187,8 @@ figcaption {
 
 .nav {
   margin-top: 3px;
-  overflow: auto;
+  overflow: visible;
+  height:auto;
   & a{
     color: #7c7c7c;
     text-decoration: none;
