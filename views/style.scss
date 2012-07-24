@@ -98,10 +98,9 @@ header{
   left: 0px;
   line-height: 35px;
   width: 100%;
-  height: 40px;
   display: inline;
   text-align: left;
-  overflow: hidden;
+  overflow: visiblef;
   @include barbackground();
   @include shadow();
   z-index: 1;
@@ -186,9 +185,8 @@ figcaption {
 }
 
 .nav {
-  margin-top: 3px;
-  overflow: visible;
-  height:auto;
+  margin-top: 5px;
+  margin-bottom: 3px;
   & a{
     color: #7c7c7c;
     text-decoration: none;
