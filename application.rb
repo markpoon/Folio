@@ -97,8 +97,9 @@ helpers do
   end
   def tagarray(t); t.strip.gsub(/(\^\s\*|\d)/, "").gsub(/\s+/, " ").split(", "); end
   def search(pattern="")
-    s = pattern.strip.gsub(/(\^\s\*|\d)/, "").downcase.gsub(/\s+/, " ").split(", ")
-    Folio.or({:tag.in => s}, {:name.in => s})
+    stringarray = pattern.strip.gsub(/(\^\s\*|\d)/, "").downcase.gsub(/\s+/, " ").split(", ")
+    stringarray.collect!{|s| Regexp.new(s, true)}
+    Folio.or({:tag.in => stringarray}, {:name.in => stringarray})
   end
   def checkIfVideo(url)
     (url =~ /http\:\/\/www\.youtube\.com\/embed\//) == 0
@@ -123,7 +124,7 @@ end
 
 post '/search' do
   @folio = search params[:search]
-  binding.pry
+  
   haml :'folioindex'
 end
 
@@ -282,6 +283,7 @@ get '/js/run.js' do
 end
 
 get "/?" do
+  binding.pry
   n = Quote.count-1
   quote = Quote.desc[rand 0..n]
   n = (0..Folio.count-1).sort{ rand() - 0.5 }[0..(rand 1..2)]
@@ -305,7 +307,7 @@ __END__
 !!! 5
 %html
   %head
-    %meta{name: "viewport", content: "width=device-width"}
+    %meta{name: "viewport", content: "width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"}
     %title="Theta"
     %link{:href => "/style.css", :rel => "stylesheet"}
     %script{:src => "/js/modernizr.js"}
@@ -353,7 +355,7 @@ __END__
 @@_search
 #search
   %form{:action=>"/search", :method=>"post", :id=>"search"}
-    %input{:type => "text", :name => "search", :class => "search", :placeholder => "Search Tags"}
+    %input{:type => "text", :name => "search", :class => "search", :placeholder => "search tags"}
 
 @@index
 .row{style: "padding-top:15px; padding-bottom:40px"}
