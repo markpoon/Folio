@@ -411,6 +411,7 @@ __END__
           read more
 
 @@show
+%meta{name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW'}
 %br
 .row
   .eightcol{contenteditable: true}
