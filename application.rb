@@ -301,6 +301,9 @@ get "/?" do
   end
 end
 
+not_found{ haml :'404'}
+error{ @error = request.env['sinatra_error']; haml :'500'}
+
 __END__
 
 @@layout
@@ -459,3 +462,18 @@ __END__
             %form{:action => "/folio/#{@folio.title}", :method => "post"}
               %input{:name=> "_method", :value=>"delete", :type=>"hidden"}
               %input{:type => 'submit', :value => 'Delete', :class => 'button'}
+
+@@404
+.warning
+  %h1 404
+  %hr 
+  Apologies, there were no results found for your query.
+  %hr
+  
+@@500
+.warning
+  %h1 500
+  %hr
+  %p @error.message
+  %hr
+  
