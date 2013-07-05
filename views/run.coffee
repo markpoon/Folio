@@ -1,5 +1,33 @@
-Lovely ["dom-1.2.0", "sugar-1.0.3", "fx-1.0.3", "ui-2.0.1", "zoom-1.1.0", "glyph-icons-1.0.2", "killie-1.0.0"], ($, fx, ui, zoom) ->  
-  $(document).on "ready", ->
-    "footer".hide()
-    "#loginimage".onClick ->
-      "footer".toggle "fade"
+Lovely ["dom", "ajax", "sugar", "fx", "ui", "zoom", "glyph-icons", "hello-ie"], ($, ajax, fx, ui, zoom) ->  
+  $("#browse").hide()
+  togglebuttons: ->
+    $("#browse").toggle()
+    $("#more").toggle()
+    @
+    
+  $("#more").onClick ->
+    count = $(".entries")[0]._.childElementCount
+    ajax.get "/folio",
+      params: {"skip": count}
+      success: (event)->
+        ".entries".append(event.ajax.responseText)
+        el = document.getElementById($(".entries")[0]._.children[count].id)
+        el.scrollIntoView true
+        @
+        
+  $("#search").remotize
+    complete: ->
+      togglebuttons()
+      @
+    success: (event)->
+      ".entries".html(event.ajax.responseText)
+      @
+    failure: ->
+      ".entries".html("No Examples Found")
+      @
+      
+  $("#browse").onClick ->
+    togglebuttons()
+    ".entries".html("")
+    $("#more").emit("click")
+    @

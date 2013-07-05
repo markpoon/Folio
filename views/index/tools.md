@@ -1,2 +1,0 @@
-##Tools for The Future
-Whether it is design or space, the future approaches in different forms: one can either adapt to the wave or get run over by it. So in the future, my secret plan is to work with 3d printers; right now just an enthusiast toy - it is edging ever closer to obsolescing factories.

@@ -1,9 +1,0 @@
-.entrieslist
-  -@entries.each_with_index do |entry, i|
-    %figure
-      -if entry[:images]
-        =one_embed(:image_link, entry)
-      %figcaption
-        %h3=entry[:title].slice(0..39)
-        -if entry[:tags]
-          =in_embed(:tag, entry)
