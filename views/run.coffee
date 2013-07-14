@@ -1,6 +1,6 @@
 Lovely ["dom", "ajax", "sugar", "fx", "ui", "zoom", "glyph-icons", "hello-ie"], ($, ajax, fx, ui, zoom) ->  
   $("#browse").hide()
-  togglebuttons: ->
+  togglebuttons = ->
     $("#browse").toggle()
     $("#more").toggle()
     @

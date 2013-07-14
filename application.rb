@@ -39,12 +39,10 @@ helpers do
     stringarray.collect!{|s| Regexp.new(s, true)}
     Folio.or({:tag.in => stringarray}, {:title.in => stringarray}, {:paragraphy.in => stringarray}).desc(:created)
   end
-  def checkIfVideo(url)
-    (url =~ /http\:\/\/www\.youtube\.com\/embed\//) == 0
+  def check(url)
+    (url =~ /http\:\/\//) == 0
   end
-  def emitYoutubePlayer(url)
-    "<iframe id='ytplayer' type='text/html' width='100%' src='#{url}' frameborder='0'/>"
-  end
+
 end
 
 get "/?" do
@@ -89,7 +87,7 @@ end
 
 not_found{ haml :'404'}
 error{ @error = request.env['sinatra_error']; haml :'500'}
-Binding.pry
+# Binding.pry
 __END__
 
 @@layout
@@ -98,7 +96,7 @@ __END__
   %head
     %meta{name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW'}
     %meta{name: "viewport", content: "width=device-width, user-scalable=yes, minimum-scale=1.0, maximum-scale=4.2"}
-    %title="Mark Poon - Developer, Designer"
+    %title="Mark Poon, Developing Ruby APIs, Designing for iOS and Web."
     %link{href: "/stylesheets/screen.css", rel: "stylesheet"}
   %body
     = yield
@@ -116,8 +114,8 @@ __END__
   =haml :_search
 .entries
   =haml :_folio_entry
-%button{:id=>"more"} Load More Examples
-%button{:id=>"browse"} Browse Examples Instead
+%button{:id=>"more"} Load Some More Examples
+%button{:id=>"browse"} Browse Through Everything Instead
 
   
 @@_folio_entry
@@ -132,19 +130,20 @@ __END__
           .tag
             %a{href: "/search/#{t}"}>=t
     %figure
-      -if checkIfVideo(folio.thumburl[0])
+      -if check(folio.thumburl[0])
         %a{href: folio.thumburl[0], target: '_blank'}
           %img{src: folio.thumb[0], alt: folio.title}
       -else
         %a{href: folio.thumburl[0], "data-zoom" => ''}
           %img{src: folio.thumb[0], alt: folio.title}
+        
     .paragraph
       =folio.paragraph[0]
     -if folio.thumburl.count > 1
       -folio.thumburl.each_index do |i|
         -unless i == 0          
           %figure.thumb
-            -if checkIfVideo(folio.thumburl[i])
+            -if check(folio.thumburl[i])
               %a{href: folio.thumburl[i], target: '_blank'}
                 %img{src: folio.thumb[i], alt: folio.title}
             -else
