@@ -1,4 +1,4 @@
-[ "sinatra", "haml", "sass", "redcarpet", "pry", "mongoid", "coffee-script", "compass"].each { |gem| require gem}
+["sinatra", "haml", "sass", "redcarpet", "pry", "mongoid", "coffee-script", "compass"].each { |gem| require gem}
 enable :inline_templates
 set :app_file, __FILE__
 set :root, File.dirname(__FILE__)
@@ -87,7 +87,7 @@ end
 
 not_found{ haml :'404'}
 error{ @error = request.env['sinatra_error']; haml :'500'}
-# Binding.pry
+Binding.pry
 __END__
 
 @@layout
