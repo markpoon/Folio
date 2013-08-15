@@ -1,1 +1,1 @@
-web: thin -e production
+web: thin
