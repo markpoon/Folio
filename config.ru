@@ -1,2 +1,4 @@
+require 'bundler/setup'
+Bundler.require(:default)
 require './application'
-run Sinatra::Application
+run Website

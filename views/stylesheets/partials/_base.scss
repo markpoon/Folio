@@ -1,11 +1,11 @@
-@import "compass/reset";
+@import "blueprint/reset";
 
 //this is the default number of columns
-$total-columns: 5; 
+$total-columns  : 5;
 //width of each column
-$column-width   : 4em; 
+$column-width   : 4em;
 //space between columns
-$gutter-width   : 1em; 
+$gutter-width   : 1em;
 //space on the right and left of the grid
 $grid-padding   : $gutter-width;
 //alternative layout breakpoints
@@ -33,25 +33,16 @@ $blueprint-font-family: Myriad, "Helvetica Neue", Arial, Helvetica, sans-serif;
 }
 
 input, textarea, select {
-  -webkit-box-sizing: border-box; 
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-appearance: none;
   padding: 0.5em;
   line-height: 1.2em;
   width: 100%;
   background: -webkit-gradient(linear, left top, left bottom, from(white), to(#cccccc));
   -webkit-appearance: none;
-  -webkit-box-shadow: 1px 1px 1px #fff;
-  -webkit-border-radius: 0.5em;
   border: 1px solid #D0D0D0;
   background: #FBFBFB;
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-  -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  @include box-shadow(0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 2px rgba(0, 0, 0, 0.05));
+  @include border-radius(5px);
   font-size: 14px;
   color: #444;
   margin-top: .3em;
@@ -65,9 +56,7 @@ textarea{
 input[type="text"]:focus, select:focus, textarea:focus {
   background: #fff;
   border: 1px solid #52A8E8;
-  -webkit-box-shadow: 0 0 1px 1px #eee;
-  box-shadow: 0 0 1px 1px #eee;
-  -moz-box-shadow: 0 0 1px 1px #eee;
+  @include box-shadow(1px 1px 1px #eee);
 }
 input {
   &[type=checkbox] {
@@ -81,8 +70,8 @@ input {
     background: #fff;
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ededed), to(#fbfbfb));
     -webkit-appearance: none;
-    -webkit-box-shadow: 1px 1px 1px #fff;
-    -webkit-border-radius: 0.25em;
+    @include box-shadow(1px 1px 1px #fff);
+    @include border-radius(0.25em);
     vertical-align: text-top;
     display: inline-block;
   }
@@ -97,11 +86,10 @@ input {
     background: #fff;
     background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ededed), to(#fbfbfb));
     -webkit-appearance: none;
-    -webkit-box-shadow: 1px 1px 1px #fff;
-    -webkit-border-radius: 0.25em;
+    @include box-shadow(1px 1px 1px #fff);
+    @include border-radius(0.25em);
     vertical-align: text-top;
     display: inline-block;
-    -webkit-border-radius: 2em;
   }
   &[type=checkbox]:checked::after {
     content: "✔";
@@ -125,17 +113,16 @@ select {
   border: 1px solid #D0D0D0;
   background: url(/images/select.png) no-repeat right center, -webkit-gradient(linear, 0% 0%, 0% 100%, from(#fbfbfb), to(#ededed));
   background: -moz-linear-gradient(19% 75% 90deg, #ededed, #fbfbfb);
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  @include box-shadow(0 1px 2px rgba(0, 0, 0, 0.05));
   color: #444;
   &:focus {
     background: white url(/images/select.png) no-repeat right center;
   }
 }
 
-@import "compass/typography";
-@import "compass/utilities";
-@import "compass/css3";
 @import "blueprint/typography";
+@import "compass/typography/text/force-wrap";
+@import "compass/css3";
+@import "compass/utilities";
 @import "compass/utilities/tables";
+

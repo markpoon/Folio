@@ -1,6 +1,6 @@
 # Require any additional compass plugins here.
 require "susy"
-
+require "compass-flexbox"
 http_path = "/"
 css_dir = "static/stylesheets"
 http_stylesheets_path = "/stylesheets"
@@ -10,12 +10,10 @@ http_images_path = "/public/images"
 javascripts_dir = "javascripts"
 
 # You can select your preferred output style here (can be overridden via the command line):
-# output_style = :expanded or :nested or :compact or :compressed
+#output_style = :expanded or :nested or :compact or :compressed
 environment = :production
-
+output_style = :compressed
 relative_assets = true
-
-
 
 # If you prefer the indented syntax, you might want to regenerate this
 # project again passing --syntax sass, or you can uncomment this:

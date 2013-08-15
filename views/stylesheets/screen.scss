@@ -1,7 +1,9 @@
-@import "blueprint/reset";
-@import "partials/base";
-@import "blueprint/typography";
-@import "susy";
+@import 'compass';
+@import 'blueprint';
+@import 'partials/base';
+@import 'partials/animation';
+@import 'susy';
+@import 'flexbox';
 
 html{
   background: rgb(234,234,234); /* Old browsers */
@@ -15,11 +17,9 @@ html{
   background: linear-gradient(to right,  rgba(234,234,234,1) 0%,rgba(211,211,211,1) 0%,rgba(237,237,237,1) 3%,rgba(234,234,234,1) 97%,rgba(211,211,211,1) 100%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eaeaea', endColorstr='#d3d3d3',GradientType=1 ); /* IE6-8 */
 }
-body{
-  
+body{ 
   @include blueprint-typography-body;
   .row{
-    clear: both;
     @include container;
     @include at-breakpoint(30em 8) {
       @include container;
@@ -27,12 +27,14 @@ body{
   }
   padding: 25px;
   text-shadow: 1px 1px 1px #ffffff;
+
   .box{
     @include display-box;
     @include box-flex(1);
     @include box-pack(justify);
     @include box-align(center);
   }
+
   .boxend{
     @include display-box;
     @include box-flex(1);
@@ -55,24 +57,44 @@ body{
     @include textshadow();
     line-height: 1em;
   }
-
-  .headerleft{ @include span-columns(9, 12); }
-  .headerright{ @include span-columns(3 omega, 12);
-    @include display-box;
-    @include box-pack(end);
-    @include box-align(baseline);
+  
+  .quote{
+    text-align: center;
+    font: italic 1.8em ""Palatino Linotype", "Book Antiqua", Palatino, serif";
+    color: #62624c;
   }
+  .author{
+    text-align: right;
+    font: italic 1.2em ""Palatino Linotype", "Book Antiqua", Palatino, serif";
+    color: #62624c;
+  }
+  .header{ 
+    @include display-box;
+    @include justify-content(space-between);
+    @include box-orient(vertical);    
+    @include at-breakpoint(40em 8) {
+      @include box-orient(horizontal);
+    }
+  }
+
   .entries{
     margin: 20px 0 20px;
     .entry{
       padding: 0 0 70px 0;
-      .captiontitle{ @include span-columns(6, 12); 
-        padding-bottom: 5px;
-      }
-      .captiontags{ @include span-columns(6 omega, 12);
+      .caption{
         @include display-box;
-        @include box-pack(end);
-        @include box-align(baseline);
+        @include box-orient(vertical);
+        @include justify-content(space-between);
+        padding-bottom: 5px;
+        @include at-breakpoint(40em 8) {
+          @include box-orient(horizontal);
+        }
+      }
+      .captiontags{
+        padding-left: 0px;
+        @include at-breakpoint(40em 8) {
+          padding-left: 15px;
+        }
       }
     }
   }
