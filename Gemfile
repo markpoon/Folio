@@ -18,5 +18,7 @@ group :development do
   gem 'pry-doc'
   gem 'pry-docmore'
   gem 'pry-debugger'
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
 end
 

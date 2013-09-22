@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'SecureRandom'
 if settings.development?
   require 'sinatra/reloader'
   require 'pry'
@@ -64,6 +65,11 @@ class Website < Sinatra::Base
       status 200
       haml :'folio_entry', {:layout => false}
     end
+  end
+
+  get '/quote' do
+    @quote = Quote.all.sample
+    return :'folio_entry', {:layout => false}
   end
 
   get '/search/:search' do
