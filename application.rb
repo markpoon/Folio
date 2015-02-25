@@ -30,6 +30,7 @@ end
 class Website < Sinatra::Base
   helpers Apphelpers
   enable :inline_templates
+  enable :sessions
   set :app_file, __FILE__
   set :root, File.dirname(__FILE__)
   set :views, 'views'
@@ -49,15 +50,19 @@ class Website < Sinatra::Base
     Bundler.require(:production)
   end
 
+  before do
+    session[:quotes] = Quote.all.entries.collect(&:id).shuffle if session[:quotes].nil?
+  end
+
   get "/?" do
     @folio = Folio.desc(:created).limit(3).entries
-    @quote = Quote.all.sample
+    @quote = Quote.find(session[:quotes][0])
     status 200
     haml :index
   end
   get '/folio' do
     @folio = Folio.desc(:created).limit(3).skip(params["skip"]||0)
-    @quote = Quote.all.sample
+    @quote = Quote.find(session[:quotes][params["skip"].to_i/3])
     status 200
     if @folio.entries.count < 1
       status 404
