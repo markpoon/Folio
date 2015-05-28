@@ -1,0 +1,18 @@
+.row{style:"padding:0px"}
+  %h1>Mark Poon
+  .header
+    Building Restful APIs for the Web and iOS.
+    %div
+      %a.lui-icon-envelope-alt{href: 'mailto:markpoon@me.com', title: "Contact Me"}Get In Touch
+.row
+  .col-xs-12.col-sm-6.col-md-4
+    =haml :github
+  .col-xs-12.col-sm-7.col-md-6
+    =haml :search, {:layout => false}
+    =haml :folio_entry
+  .col-xs-12.col-sm-5.col-md-2
+    =haml :lastfm
+%button{:id=>"more"} Load Some More Examples
+%button{:id=>"browse"} Browse Through Everything Instead
+
+

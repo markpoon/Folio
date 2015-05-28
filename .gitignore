@@ -1,4 +1,5 @@
 .DS_Store
+.sass-cache/*
 views/.DS_Store
 .sass-cache/f12c0059ded7d28f84896404f31f7dc2ec7b04a1/
 .sass-cache/e9c65ba7024d1a870690d2231fc9ea07a08b40a5/

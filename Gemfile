@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
 
-gem 'thin'
+gem 'puma'
 gem 'sinatra'
 gem 'sinatra-contrib'
 
@@ -12,6 +12,8 @@ gem 'sass'
 gem 'compass'
 gem 'coffee-script'
 gem 'susy'
+
+gem 'httparty'
 
 group :development do
   gem 'pry'

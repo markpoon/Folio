@@ -1,9 +1,13 @@
 require 'sinatra/base'
 require 'SecureRandom'
+require 'HTTParty'
 if settings.development?
   require 'sinatra/reloader'
   require 'pry'
 end
+
+temp = HTTParty.get('http://ws.audioscrobbler.com/2.0/user/darthophage/toptracks.xml')
+@@lastfmdata = temp["toptracks"]["track"]
 
 class Time
   def humanize
@@ -55,12 +59,14 @@ class Website < Sinatra::Base
   end
 
   get "/?" do
+    @github = github
     @folio = Folio.desc(:created).limit(3).entries
     @quote = Quote.find(session[:quotes][0])
     status 200
     haml :index
   end
   get '/folio' do
+    @github = github
     @folio = Folio.desc(:created).limit(3).skip(params["skip"]||0)
     @quote = Quote.find(session[:quotes][params["skip"].to_i/3])
     status 200
@@ -106,8 +112,13 @@ class Website < Sinatra::Base
 
   not_found{ haml :'404'}
   error{ @error = request.env['sinatra_error']; haml :'500'}
+
 end
 
+def github
+  temp = HTTParty.get('https://api.github.com/users/markpoon/repos', :query => {:sort => "created"})
+  temp.collect {|a| [a["name"], a["description"], a["html_url"]]}
+end
 class Folio
   include Mongoid::Document
   field :title, type: String
@@ -128,94 +139,3 @@ class Quote
   validates_presence_of :quotation, :author
   validates_uniqueness_of :quotation
 end
-
-__END__
-
-@@layout
-!!! 5
-%html
-  %head
-    %meta{name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW'}
-    %meta{name: "viewport", content: "width=device-width, user-scalable=yes, minimum-scale=1.0, maximum-scale=4.2"}
-    %title="Mark Poon, Developing Ruby APIs, Designing for iOS and Web."
-    %link{href:"/stylesheets/animation.css", rel:"stylesheet"}
-    %link{href: "/stylesheets/screen.css", rel: "stylesheet"}
-  %body
-    = yield
-  %script{:src => "http://cdn.lovely.io/core.js"}
-  %script{:src => "/js/run.js"}
-
-@@index
-.row{style:"padding:0px"}
-  %h1>Mark Poon
-  .header
-    Building Restful APIs for the Web and iOS.
-    %div
-      %a.lui-icon-envelope-alt{href: 'mailto:markpoon@me.com', title: "Contact Me"}Get In Touch
-.row{style:"padding:0px"}
-  =haml :search, {:layout => false}
-.entries
-  =haml :folio_entry
-%button{:id=>"more"} Load Some More Examples
-%button{:id=>"browse"} Browse Through Everything Instead
-
-@@folio_entry
--@folio.each do |folio|
-  .row.entry{id: folio.title}
-    .caption
-      %div
-        %h2=folio.title.gsub('_', ' ')
-        =folio.created.strftime("Created: %b, %Y")
-      .captiontags
-        - folio.tag.each do |t|
-          %td{style: "width:auto;", nowrap: "nowrap"}
-            .tag
-              %a{href: "/search/#{t}"}>=t
-    %figure
-      -if check(folio.thumburl[0])
-        %a{href: folio.thumburl[0], target: '_blank'}
-          %img{src: folio.thumb[0], alt: folio.title}
-      -else
-        %a{href: folio.thumburl[0], "data-zoom" => ''}
-          %img{src: folio.thumb[0], alt: folio.title}
-    .paragraph
-      =folio.paragraph[0]
-    -if folio.thumburl.count > 1
-      -folio.thumburl.each_index do |i|
-        -unless i == 0          
-          %figure.thumb
-            -if check(folio.thumburl[i])
-              %a{href: folio.thumburl[i], target: '_blank'}
-                %img{src: folio.thumb[i], alt: folio.title}
-            -else
-              %a{href: folio.thumburl[i], "data-zoom" => ''}
-                %img{src: folio.thumb[i], alt: folio.title}
-          -if i%3 == 0
-            .row.paragraph
-              =folio.paragraph[i/3]
-%hr
-.row.quote
-  =@quote.quotation
-.row.author
-  =@quote.author
-%hr{style: "margin-bottom: 125px;"}
-
-@@search
-%form{:id => "search", :action=>"/search", :method=>"post"}
-  .searcharea.box
-    %input.box{:type => "text", :name => "search", :placeholder => "What sort of examples are you looking for?"}
-
-@@404
-.warning
-  %h1 404
-  %hr 
-  Apologies, there were no results found for your query.
-  %hr
-
-@@500
-.warning
-  %h1 500
-  %hr
-  %p @error.message
-  %hr
-
