@@ -1,18 +1,47 @@
-!!! 5
-%html
-  %head
-    %meta{name: 'ROBOTS', content: 'NOINDEX, NOFOLLOW'}
-    %meta{name: "viewport", content: "width=device-width, user-scalable=yes, minimum-scale=1.0, maximum-scale=4.2"}
-    %title="Mark Poon, Programmer, Designer"
-    %link{href: "http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css", rel: "stylesheet"}
-    %link{href: "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css", rel: "stylesheet"}
-    -#%link{href: "/stylesheets/screen.css", rel: "stylesheet"}
-  %body
-    = yield
-  %script{:src => "https://code.jquery.com/jquery-2.1.4.min.js"}
-  %script{:src => "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"}
-  %script{:src => "http://cdn.lovely.io/core.js"}
-  %script{:src => "/js/parallax.min.js"}
-  %script{:src => "/js/run.js"}
-
+doctype html
+html
+  head
+    meta name='ROBOTS' content='NOINDEX NOFOLLOW' 
+    meta name="viewport" content="width=device-width user-scalable=yes minimum-scale=1.0 maximum-scale=4.2" 
+    title="Mark Poon Programmer Designer"
+    link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" 
+    link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" 
+    link href="css/justifiedGallery.css" rel="stylesheet" 
+  body
+    .navbar.navbar-default.navbar-fixed-top role="navigation"
+      .container
+        .navbar-header
+          button.navbar-toggle data-target=".collapse" data-toggle="collapse" type="button" 
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand#brand href="#" Mark Poon
+        .navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li
+              a href="#"
+                i.fa.fa-camera>
+                | Recent
+            li
+              a href="#"
+                i.fa.fa-video-camera>
+                | Videos
+            li.dropdown
+              a.dropdown-toggle#menuAlbumsText data-toggle="dropdown" href="/work"
+                i.fa.fa-chevron-down>
+                | Photos
+              ul.dropdown-menu role="menu"
+          ul.nav.navbar-nav.navbar-right
+            li
+              a href="mailto:markpoon@me.com"
+                i.fa.fa-envelope-o>
+                | Contact
+    ==yield
+  script src="https://code.jquery.com/jquery-2.1.4.min.js" 
+  script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js" 
+  script src="http://cdn.lovely.io/core.js" 
+  script src="/js/parallax.min.js" 
+  script src="/js/justifiedGallery.js" 
+  script src="/js/run.js" 
 

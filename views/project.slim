@@ -1,0 +1,36 @@
+- unless folio.empty?
+  - for f in folio
+    .parallax-window data-parallax="scroll" data-image-src=f.thumb[0] style="height:500px;"
+    .container
+      .container-fluid
+        .row.col-xs-12.col-sm-12.col-md-12.col-lg-12
+         h3
+          => f.title.gsub(/_/, ' ')
+          small
+            = f.created.strftime("Created: %b %Y")
+        .text-right
+          - for tag in f.tag
+            span.label.label-info>
+              a href="/search/"
+              = tag
+        p = f.paragraph[0]
+        - if f.thumburl.count > 1
+          - f.thumburl.each_index do |i|
+            - unless i == 0
+              figure.thumb
+                - if check(f.thumburl[i])
+                  a href=f.thumburl[i] target='_blank' 
+                    img src=f.thumb[i] alt=f.title 
+                - else
+                  a href=f.thumburl[i] data-zoom='' 
+                    img src=f.thumb[i] alt=f.title 
+              - if i%3 == 0
+                .row.paragraph
+                  = f.paragraph[i/3]
+  hr
+  .row.quote
+    = quote.quotation
+  .row.author
+    = quote.author
+  hr style: "margin-bottom: 125px;" 
+  

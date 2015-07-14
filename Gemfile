@@ -7,7 +7,7 @@ gem 'sinatra-contrib'
 
 gem 'mongoid'
 
-gem 'haml'
+gem 'slim'
 gem 'sass'
 gem 'compass'
 gem 'coffee-script'

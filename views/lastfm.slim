@@ -1,15 +1,14 @@
--@@lastfmdata.each do |track|
+-lastfm.each do |track|
   .row
-  %h2<
-    =track["rank"]
-    \.
-    %small
-      %b
-        =track["name"]
-      by 
-      %i
-        =track["artist"]["name"]
-  %p
-    =track["playcount"]
-    plays
+  h2
+    => track["rank"]
+    small
+      b
+        => track["name"]
+      | by 
+      i
+        => track["artist"]["name"]
+  p
+    => track["playcount"]
+    | plays
  

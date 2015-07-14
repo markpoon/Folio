@@ -1,13 +1,14 @@
 require 'sinatra/base'
 require 'SecureRandom'
 require 'HTTParty'
+require 'slim'
 if settings.development?
   require 'sinatra/reloader'
   require 'pry'
 end
 
 temp = HTTParty.get('http://ws.audioscrobbler.com/2.0/user/darthophage/toptracks.xml')
-@@lastfmdata = temp["toptracks"]["track"]
+@@lastfm = temp["toptracks"]["track"]
 
 class Time
   def humanize
@@ -39,8 +40,11 @@ class Website < Sinatra::Base
   set :root, File.dirname(__FILE__)
   set :views, 'views'
   set :public_folder, 'static'
-  set :haml, {:format => :html5}
   Mongoid.load! "config/mongoid.yml"
+  # register Sinatra::Partial
+  # Slim::Engine.set_default_options :pretty => true
+  # set :slim, :layout_engine => :slim
+  # set :partial_template_engine, :slim
 
   configure :development do
     register Sinatra::Reloader
@@ -63,7 +67,7 @@ class Website < Sinatra::Base
     @folio = Folio.desc(:created).limit(3).entries
     @quote = Quote.find(session[:quotes][0])
     status 200
-    haml :index
+    slim :index
   end
   get '/folio' do
     @github = github
@@ -74,28 +78,28 @@ class Website < Sinatra::Base
       status 404
     else
       status 200
-      haml :'folio_entry', {:layout => false}
+      slim :project, {:layout => false}
     end
   end
 
   get '/quote' do
     @quote = Quote.all.sample
-    return :'folio_entry', {:layout => false}
+    return :project, {:layout => false}
   end
 
   get '/search/:search' do
     @folio = search params[:search]
-    haml :'folio_entry', {:layout => false}
+    slim :folio, {:layout => false}
   end
 
   post '/search' do
     @folio = search params[:search]
     if @folio.entries.count < 1
       status 404
-      haml :'404', {:layout => false}
+      slim :'404', {:layout => false}
     else
       status 200
-      haml :'folio_entry', {:layout => false}
+      slim :project, {:layout => false}
     end
   end
 
@@ -110,8 +114,8 @@ class Website < Sinatra::Base
     coffee :run
   end
 
-  not_found{ haml :'404'}
-  error{ @error = request.env['sinatra_error']; haml :'500'}
+  not_found{ slim :'404'}
+  error{ @error = request.env['sinatra_error']; slim :'500'}
 
 end
 
