@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require 'SecureRandom'
+require 'securerandom'
 require 'HTTParty'
 require 'slim'
 if settings.development?
