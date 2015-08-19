@@ -1,10 +1,19 @@
-==slim :project, locals: { folio: @folio, quote: @quote }
+div#Quote.fullscreen
+  ==slim :quote, locals: { quote: @quote, space: @space }
 .container
-  .row.col-xs-12.col-sm-6.col-md-4.col-lg-12
+  .col-xs-12.col-sm-12.col-md-12.col-lg-12#blog
+    h1 Blog
+.container
+  .col-xs-12.col-sm-12.col-md-6.col-lg-6#github
+    h2 Code
+    p Code that I've writen and links to their github accounts
     ==slim :github, locals: { github: @github }
-.container
-  .row.col-xs-12.col-sm-12.col-md-4.col-lg-12
+  .col-xs-12.col-sm-12.col-md-6.col-lg-6
+    h2 Audio
+    p The tracks I've listened to the most over the span of 4-5 years as tracked by lastfm, circa 2008-2014ish
     ==slim :lastfm, locals: { lastfm: @@lastfm }
-.container
-  .row.col-xs-12.col-sm-12.col-md-4.col-lg-12
-    ==slim :lastfm, locals: { lastfm: @@lastfm }
+.col-xs-12.col-sm-12.col-md-12.col-lg-12#projects
+  h2 Design
+  p Web interfaces, 
+  ==slim :project, locals: { folio:@folio, quote: @quote }
+

@@ -1,14 +1,14 @@
--lastfm.each do |track|
-  .row
-  h2
-    => track["rank"]
-    small
-      b
-        => track["name"]
-      | by 
-      i
-        => track["artist"]["name"]
-  p
-    => track["playcount"]
-    | plays
- 
+-unless lastfm.empty?
+  -for track in lastfm
+    .row
+    h2
+      => track["rank"]
+      small
+        b
+          => track["name"]
+        | by 
+        i
+          => track["artist"]["name"]
+    p
+      => track["playcount"]
+      | plays

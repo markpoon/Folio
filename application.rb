@@ -41,6 +41,7 @@ class Website < Sinatra::Base
   set :views, 'views'
   set :public_folder, 'static'
   Mongoid.load! "config/mongoid.yml"
+
   # register Sinatra::Partial
   # Slim::Engine.set_default_options :pretty => true
   # set :slim, :layout_engine => :slim
@@ -60,49 +61,22 @@ class Website < Sinatra::Base
 
   before do
     session[:quotes] = Quote.all.entries.collect(&:id).shuffle if session[:quotes].nil?
+    session[:space] = space_images.shuffle if session[:space].nil?
   end
 
   get "/?" do
     @github = github
-    @folio = Folio.desc(:created).limit(3).entries
-    @quote = Quote.find(session[:quotes][0])
+    @quote = Quote.find(session[:quotes].pop)
+    @space = session[:space].pop
+    @folio = Folio.all.entries.reverse
     status 200
     slim :index
   end
-  get '/folio' do
-    @github = github
-    @folio = Folio.desc(:created).limit(3).skip(params["skip"]||0)
-    @quote = Quote.find(session[:quotes][params["skip"].to_i/3])
-    status 200
-    if @folio.entries.count < 1
-      status 404
-    else
-      status 200
-      slim :project, {:layout => false}
-    end
-  end
 
   get '/quote' do
-    @quote = Quote.all.sample
-    return :project, {:layout => false}
+    Quote.find(session[:quotes].pop).to_json
   end
-
-  get '/search/:search' do
-    @folio = search params[:search]
-    slim :folio, {:layout => false}
-  end
-
-  post '/search' do
-    @folio = search params[:search]
-    if @folio.entries.count < 1
-      status 404
-      slim :'404', {:layout => false}
-    else
-      status 200
-      slim :project, {:layout => false}
-    end
-  end
-
+  
   # INTERFACE #
   get '/stylesheets/:name.css' do
     content_type 'text/css', :charset => 'utf-8'
@@ -117,6 +91,13 @@ class Website < Sinatra::Base
   not_found{ slim :'404'}
   error{ @error = request.env['sinatra_error']; slim :'500'}
 
+end
+
+def space_images
+  Dir.chdir "static/"
+  img = Dir.glob "images/space/*"
+  Dir.chdir ".."
+  img
 end
 
 def github

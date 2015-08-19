@@ -1,0 +1,21 @@
+html, body { height: 100%; }
+
+#Quote {  margin-top: 50px; }
+
+.fullscreen { height: 100%;
+  overflow-y: auto; }
+.quote { position: relative;
+  top: 29%;
+  transform: translateY(-29%);
+  margin-left: 15%;
+  margin-right: 15%; }
+.quote h1 { color: white;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 1); }
+.author {position: relative;
+  top: 40%;
+  transform: translateY(-40%);
+  margin-left: 15%;
+  margin-right: 15%;
+  color: white; }
+.author h3 { color: white;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 1); }
