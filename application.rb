@@ -1,6 +1,6 @@
 require 'sinatra/base'
 require 'securerandom'
-require 'HTTParty'
+require 'httparty'
 require 'slim'
 if settings.development?
   require 'sinatra/reloader'
