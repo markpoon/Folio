@@ -7,8 +7,9 @@ if settings.development?
   require 'pry'
 end
 
-temp = HTTParty.get('http://ws.audioscrobbler.com/2.0/user/darthophage/toptracks.xml')
-@@lastfm = temp["toptracks"]["track"]
+# temp = HTTParty.get('http://ws.audioscrobbler.com/2.0/user/darthophage/toptracks.xml')
+# binding.pry
+# @@lastfm = temp["toptracks"]["track"]
 
 class Time
   def humanize
